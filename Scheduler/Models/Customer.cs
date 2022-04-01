@@ -13,5 +13,12 @@ namespace Scheduler.Models
         [Required]
         public int PhoneNumber { get; set; }
         public string Email { get; set; }
+        public string FullName
+        {
+            get
+            {
+                return $"{FirstName} {LastName}";
+            }
+        }
     }
 }

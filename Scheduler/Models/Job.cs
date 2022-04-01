@@ -13,6 +13,6 @@ namespace Scheduler.Models
         [Required]
         public int CustomerLocationId { get; set; }
         public int BillingTypeId { get; set; }
-        public int routeOrderNumber { get; set; }
+        public int RouteOrderNumber { get; set; }
     }
 }
