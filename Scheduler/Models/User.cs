@@ -11,6 +11,9 @@ namespace Scheduler.Models
         [Required]
         public string FirstName { get; set; }
         [Required]
+        public string LastName { get; set; }
+        [Required]
         public int UserTypeId { get; set; }
+        public UserType UserType { get; set; }
     }
 }

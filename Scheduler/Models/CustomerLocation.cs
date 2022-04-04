@@ -10,14 +10,15 @@ namespace Scheduler.Models
         [Required]
         public int CustomerId { get; set; }
         [Required]
-        public string StreedAddress { get; set; }
+        public string StreetAddress { get; set; }
         [Required]
         public string City { get; set; }
         [Required]
         public string State { get; set; }
         [Required]
-        public int Zip { get; set; }
-        public bool IsBilling { get; set; }
+        public string Zip { get; set; }
+         public Customer Customer { get; set; }
+
 
     }
 }

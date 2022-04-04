@@ -1,5 +1,5 @@
 CREATE TABLE [User] (
-  [Id] int PRIMARY KEY,
+  [Id] int PRIMARY KEY IDENTITY,
   [Email] nvarchar(255),
   [FirstName] nvarchar(255),
   [LastName] nvarchar(255),
@@ -8,13 +8,13 @@ CREATE TABLE [User] (
 GO
 
 CREATE TABLE [UserType] (
-  [Id] int PRIMARY KEY,
+  [Id] int PRIMARY KEY IDENTITY,
   [Name] nvarchar(255)
 )
 GO
 
 CREATE TABLE [Customer] (
-  [Id] int PRIMARY KEY,
+  [Id] int PRIMARY KEY IDENTITY,
   [FirstName] nvarchar(255),
   [LastName] nvarchar(255),
   [PhoneNumber] nvarchar(255),
@@ -23,19 +23,18 @@ CREATE TABLE [Customer] (
 GO
 
 CREATE TABLE [CustomerLocation] (
-  [Id] int PRIMARY KEY,
+  [Id] int PRIMARY KEY IDENTITY,
   [Name] nvarchar(255),
   [CustomerId] int,
   [StreetAddress] nvarchar(255),
   [City] nvarchar(255),
   [State] nvarchar(255),
-  [Zip] nvarchar(255),
-  [IsBilling] bit
+  [Zip] nvarchar(255)
 )
 GO
 
 CREATE TABLE [Job] (
-  [Id] int PRIMARY KEY,
+  [Id] int PRIMARY KEY IDENTITY,
   [Name] nvarchar(255),
   [Details] nvarchar(255),
   [CustomerLocationId] int,
@@ -45,7 +44,7 @@ CREATE TABLE [Job] (
 GO
 
 CREATE TABLE [JobInstance] (
-  [Id] int PRIMARY KEY,
+  [Id] int PRIMARY KEY IDENTITY,
   [JobId] int,
   [CompletedDate] datetime,
   [Price] decimal,
@@ -57,7 +56,7 @@ CREATE TABLE [JobInstance] (
 GO
 
 CREATE TABLE [UserJobInstance] (
-  [Id] int PRIMARY KEY,
+  [Id] int PRIMARY KEY IDENTITY,
   [JobInstanceId] int,
   [UserId] int,
   [TimeIn] datetime,
@@ -66,7 +65,7 @@ CREATE TABLE [UserJobInstance] (
 GO
 
 CREATE TABLE [TimeSheet] (
-  [Id] int PRIMARY KEY,
+  [Id] int PRIMARY KEY IDENTITY,
   [JobInstanceId] int,
   [UserId] int,
   [TimeIn] datetime,

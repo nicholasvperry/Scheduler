@@ -12,7 +12,7 @@ namespace Scheduler.Models
         public string Details { get; set; }
         [Required]
         public int CustomerLocationId { get; set; }
-        public int BillingTypeId { get; set; }
         public int RouteOrderNumber { get; set; }
+        public CustomerLocation CustomerLocation { get; set; }
     }
 }
