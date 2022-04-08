@@ -68,14 +68,17 @@ namespace Scheduler.Controllers
 
         // PUT api/<JobController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, Job job)
         {
+            _jobRepository.UpdateJob(job);
+            return NoContent();
         }
 
         // DELETE api/<JobController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _jobRepository.DeleteJob(id);
         }
     }
 }

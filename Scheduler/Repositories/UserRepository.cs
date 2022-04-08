@@ -233,7 +233,7 @@ namespace Scheduler.Repositories
             }
         }
 
-        public void UpdateUserType(User user)
+        public void UpdateUser(User user)
         {
             using (var conn = Connection)
             {

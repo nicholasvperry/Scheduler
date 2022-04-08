@@ -1,15 +1,15 @@
 import React from "react";
+import CustomerList from "./Customer/CustomerList";
 
 export default function Hello() {
   const user = JSON.parse(sessionStorage.getItem("userProfile"))
   return (
-    <span style={{
-      position: "fixed",
-      left: 0,
-      right: 0,
-      top: "50%",
-      marginTop: "-0.5rem",
+    <>
+    <h4 style={{
       textAlign: "center",
-    }}>hello {user.fullName}</span>
+      //user.fullName is a cunstructor in csharp
+    }}>Hello {user.fullName}</h4>
+    
+    </>
   );
 }

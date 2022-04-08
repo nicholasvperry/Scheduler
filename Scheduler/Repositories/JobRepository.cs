@@ -18,13 +18,16 @@ namespace Scheduler.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                              
-                        SELECT j.Id AS JobId, j.[Name] AS JobName, j.Details, j.CustomerLocationId, j.RouteOrderNumber,
+                        SELECT j.Id AS JobId, j.[Name] AS JobName, j.Details, j.CustomerLocationId, j.RouteOrderNumber, j.JobStatusId, j.Price,                 j.BillingTypeId,
                           cl.Id AS LocationId, cl.Name AS LocationName, cl.StreetAddress, cl.City, cl.State, cl.Zip,
-                          c.Id AS CustomerId, c.FirstName, c.LastName, c.PhoneNumber, c.Email
+                          c.Id AS CustomerId, c.FirstName, c.LastName, c.PhoneNumber, c.Email,
+                          jn.Id as JobNoteId, jn.UserId, jn.Details AS NoteDetails, jn.CreateDateTime as NoteCreateDateTime,
+                          u.Email, u.FirstName, u.LastName
                        FROM Job j
                        LEFT JOIN CustomerLocation cl ON j.CustomerLocationId = cl.Id
-                       LEFT JOIN Customer c ON cl.CustomerId = c.Id";
+                       LEFT JOIN Customer c ON cl.CustomerId = c.Id
+                       LEFT JOIN JobNote jn ON j.Id = jn.JobId
+                       LEFT JOIN [User] u ON jn.UserId = u.Id";
                     var reader = cmd.ExecuteReader();
 
                     var jobs = new List<Job>();
@@ -49,12 +52,16 @@ namespace Scheduler.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                       SELECT j.Id AS JobId, j.[Name] AS JobName, j.Details, j.CustomerLocationId, j.RouteOrderNumber,
+                       SELECT j.Id AS JobId, j.[Name] AS JobName, j.Details, j.CustomerLocationId, j.RouteOrderNumber, j.JobStatusId, j.Price,              j.BillingTypeId,
                           cl.Id AS LocationId, cl.Name AS LocationName, cl.StreetAddress, cl.City, cl.State, cl.Zip,
-                          c.Id AS CustomerId, c.FirstName, c.LastName, c.PhoneNumber, c.Email
+                          c.Id AS CustomerId, c.FirstName, c.LastName, c.PhoneNumber, c.Email,
+                          jn.Id as JobNoteId, jn.UserId, jn.Details AS NoteDetails, jn.CreateDateTime as NoteCreateDateTime,
+                          u.Email, u.FirstName, u.LastName
                        FROM Job j
                        LEFT JOIN CustomerLocation cl ON j.CustomerLocationId = cl.Id
                        LEFT JOIN Customer c ON cl.CustomerId = c.Id
+                       LEFT JOIN JobNote jn ON j.Id = jn.JobId
+                       LEFT JOIN [User] u ON jn.UserId = u.Id
                         WHERE j.id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
@@ -83,12 +90,16 @@ namespace Scheduler.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                      SELECT j.Id AS JobId, j.[Name] AS JobName, j.Details, j.CustomerLocationId, j.RouteOrderNumber,
+                      SELECT j.Id AS JobId, j.[Name] AS JobName, j.Details, j.CustomerLocationId, j.RouteOrderNumber, j.JobStatusId, j.Price,               j.BillingTypeId,
                           cl.Id AS LocationId, cl.Name AS LocationName, cl.StreetAddress, cl.City, cl.State, cl.Zip,
-                          c.Id AS CustomerId, c.FirstName, c.LastName, c.PhoneNumber, c.Email
+                          c.Id AS CustomerId, c.FirstName, c.LastName, c.PhoneNumber, c.Email,
+                          jn.Id as JobNoteId, jn.UserId, jn.Details AS NoteDetails, jn.CreateDateTime as NoteCreateDateTime,
+                          u.Email, u.FirstName, u.LastName
                        FROM Job j
                        LEFT JOIN CustomerLocation cl ON j.CustomerLocationId = cl.Id
                        LEFT JOIN Customer c ON cl.CustomerId = c.Id
+                       LEFT JOIN JobNote jn ON j.Id = jn.JobId
+                       LEFT JOIN [User] u ON jn.UserId = u.Id
                         WHERE cl.id = @customerLocationId";
 
                     cmd.Parameters.AddWithValue("@customerLocationId", customerLocationId);
@@ -115,12 +126,16 @@ namespace Scheduler.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                      SELECT j.Id AS JobId, j.[Name] AS JobName, j.Details, j.CustomerLocationId, j.RouteOrderNumber,
+                      SELECT j.Id AS JobId, j.[Name] AS JobName, j.Details, j.CustomerLocationId, j.RouteOrderNumber, j.JobStatusId, j.Price,               j.BillingTypeId,
                           cl.Id AS LocationId, cl.Name AS LocationName, cl.StreetAddress, cl.City, cl.State, cl.Zip,
-                          c.Id AS CustomerId, c.FirstName, c.LastName, c.PhoneNumber, c.Email
+                          c.Id AS CustomerId, c.FirstName, c.LastName, c.PhoneNumber, c.Email,
+                          jn.Id as JobNoteId, jn.UserId, jn.Details AS NoteDetails, jn.CreateDateTime as NoteCreateDateTime,
+                          u.Email, u.FirstName, u.LastName
                        FROM Job j
                        LEFT JOIN CustomerLocation cl ON j.CustomerLocationId = cl.Id
                        LEFT JOIN Customer c ON cl.CustomerId = c.Id
+                       LEFT JOIN JobNote jn ON j.Id = jn.JobId
+                       LEFT JOIN [User] u ON jn.UserId = u.Id
                         WHERE c.Id = @customerId";
 
                     cmd.Parameters.AddWithValue("@customerId", customerId);
@@ -150,14 +165,17 @@ namespace Scheduler.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        INSERT INTO Job ([Name], Details, CustomerLocationId, RouteOrderNumber)
+                        INSERT INTO Job ([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
                         OUTPUT INSERTED.ID
-                        VALUES (@Name, @Details, @CustomerLocationId, @RouteOrderNumber)";
+                        VALUES (@Name, @Details, @CustomerLocationId, @RouteOrderNumber, @JobStatusId, @Price, @BillingTypeId)";
 
                     DbUtils.AddParameter(cmd, "@Name", job.Name);
                     DbUtils.AddParameter(cmd, "@Details", job.Details);
                     DbUtils.AddParameter(cmd, "@CustomerLocationId", job.CustomerLocationId);
                     DbUtils.AddParameter(cmd, "@RouteOrderNumber", job.RouteOrderNumber);
+                    DbUtils.AddParameter(cmd, "@JobStatusId", job.JobStatusId);
+                    DbUtils.AddParameter(cmd, "@Price", job.Price);
+                    DbUtils.AddParameter(cmd, "@BillingTypeId", job.BillingTypeId);
 
                     job.Id = (int)cmd.ExecuteScalar();
                 }
@@ -182,6 +200,39 @@ namespace Scheduler.Repositories
             }
         }
 
+        public void UpdateJob(Job job)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                               UPDATE Job	
+                                 SET [Name] = @Name, 
+                                Details = @Details,
+                                CustomerLocationId = @CustomerLocationId,
+                                RouteOrderNumber = @RouteOrderNumber,
+                                JobStatusId = @JobStatusId,
+                                Price = @Price,
+                                BillingTypeId = @BillingTypeId
+                                WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Name", job.Name);
+                    DbUtils.AddParameter(cmd, "@Details", job.Details);
+                    DbUtils.AddParameter(cmd, "@CustomerLocationId", job.CustomerLocationId);
+                    DbUtils.AddParameter(cmd, "@RouteOrderNumber", job.RouteOrderNumber);
+                    DbUtils.AddParameter(cmd, "@JobStatusId", job.JobStatusId);
+                    DbUtils.AddParameter(cmd, "@Price", job.Price);
+                    DbUtils.AddParameter(cmd, "@BillingTypeId", job.BillingTypeId);
+                    DbUtils.AddParameter(cmd, "@Id", job.Id);
+
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         private Job NewJobFromReader(SqlDataReader reader)
         {
             return new Job()
@@ -191,6 +242,18 @@ namespace Scheduler.Repositories
                 Details = reader.GetString(reader.GetOrdinal("Details")),
                 CustomerLocationId = reader.GetInt32(reader.GetOrdinal("CustomerLocationId")),
                 RouteOrderNumber = reader.GetInt32(reader.GetOrdinal("RouteOrderNumber")),
+                JobStatusId = reader.GetInt32(reader.GetOrdinal("JobStatusId")),
+                Price = reader.GetDecimal(reader.GetOrdinal("Price")),
+                BillingTypeId = reader.GetInt32(reader.GetOrdinal("BillingTypeId")),
+                //JobNote = new JobNote()
+                //{
+                //    Id = DbUtils.GetNullableInt(reader.GetOrdinal("JobNoteId")),
+                //    UserId = DbUtils.GetNullableInt(reader.GetOrdinal("UserId")),
+                //    Details = DbUtils.GetNullableString(reader.GetOrdinal("NoteDetails")),
+                //    CreateDateTime = DbUtils.GetNullableDateTime(reader.GetOrdinal("NoteCreateDateTime"))
+
+
+                //},
                 CustomerLocation = new CustomerLocation()
                 {
                     Id = reader.GetInt32(reader.GetOrdinal("LocationId")),

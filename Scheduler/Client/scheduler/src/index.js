@@ -5,12 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import "bootstrap/dist/css/bootstrap.min.css";
+import { UserProvider } from './Providers/UserProvider';
 // import * as serviceWorker from './serviceWorker';
 
 
 ReactDOM.render(
   <React.StrictMode>
+    <UserProvider>
     <App />
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

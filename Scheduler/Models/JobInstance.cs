@@ -10,16 +10,16 @@ namespace Scheduler.Models
         [Required]
         public int JobId { get; set; }
         
-        public DateTime CompletedDate { get; set; }
+        public DateTime? CompletedDate { get; set; }
         
-        public int Price { get; set; }
+        public decimal? Price { get; set; }
         
-        public int CurrentRouteOrderNumber { get; set; }
+        public int? CurrentRouteOrderNumber { get; set; }
         
-        public DateTime ScheduleDate { get; set; }
+        public DateTime? ScheduleDate { get; set; }
         
         public bool IsPaid { get; set; }
-        public int CompletedUserId { get; set; }
+        public int? CompletedUserId { get; set; }
 
     }
 }

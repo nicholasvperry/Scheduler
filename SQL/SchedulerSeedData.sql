@@ -1,35 +1,38 @@
-INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email)
-VALUES ('Jenny', 'Weasley', '3045555555', 'jenny@weasley.com')
+INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email, CreateDateTime)
+VALUES ('Jenny', 'Weasley', '3045555555', 'jenny@weasley.com', GETDATE())
 
-INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email)
-VALUES ('Luna', 'Lovegood', '3046789101', 'luna@lovegood.com')
+INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email, CreateDateTime)
+VALUES ('Luna', 'Lovegood', '3046789101', 'luna@lovegood.com', GETDATE())
 
-INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email)
-VALUES ('Cho', 'Chang', '8017835972', 'cho@chang.com')
+INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email, CreateDateTime)
+VALUES ('Cho', 'Chang', '8017835972', 'cho@chang.com', GETDATE())
 
-INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email)
-VALUES ('Albus', 'Dumbledore', '9882829753', 'albus@dumgledore.com')
+INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email, CreateDateTime)
+VALUES ('Albus', 'Dumbledore', '9882829753', 'albus@dumgledore.com', GETDATE())
 
-INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email)
-VALUES ('Neville', 'Longbottom', '3041234567', 'neville@longbottom.com')
+INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email, CreateDateTime)
+VALUES ('Neville', 'Longbottom', '3041234567', 'neville@longbottom.com', GETDATE())
 
-INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email)
-VALUES ('Rubeus', 'Hagrid', '3041235678', 'rubeus@hagrid.com')
+INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email, CreateDateTime)
+VALUES ('Rubeus', 'Hagrid', '3041235678', 'rubeus@hagrid.com', GETDATE())
 
-INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email)
-VALUES ('Minerva', 'McGonagall', '3047654321', 'minerva@mcgonagall.com')
+INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email, CreateDateTime)
+VALUES ('Minerva', 'McGonagall', '3047654321', 'minerva@mcgonagall.com', GETDATE())
 
-INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email)
-VALUES ('Remus', 'Lupin', '3045887324', 'remus@lupin.com')
+INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email, CreateDateTime)
+VALUES ('Remus', 'Lupin', '3045887324', 'remus@lupin.com', GETDATE())
 
-INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email)
-VALUES ('Bellatrix', 'Lestrange', '6666666666', 'bellatrix@lestrange.com')
+INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email, CreateDateTime)
+VALUES ('Bellatrix', 'Lestrange', '6666666666', 'bellatrix@lestrange.com', GETDATE())
 
-INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email)
-VALUES ('Alastor', 'Moody', '3041234567', 'alastor@moody.com')
+INSERT INTO [Customer] (FirstName, LastName, PhoneNumber, Email, CreateDateTime)
+VALUES ('Alastor', 'Moody', '3041234567', 'alastor@moody.com', GETDATE())
 
 INSERT INTO CustomerLocation ([Name], CustomerId, StreetAddress, City, [State], Zip)
 VALUES ('Home', 1, '1234 Main Street', 'Barboursville', 'WV', '25504')
+
+INSERT INTO CustomerLocation ([Name], CustomerId, StreetAddress, City, [State], Zip)
+VALUES ('Farm', 1, '498 Robinhood Way', 'Barboursville', 'WV', '25504')
 
 INSERT INTO CustomerLocation ([Name], CustomerId, StreetAddress, City, [State], Zip)
 VALUES ('Home', 2, '6205 Running Street', 'Barboursville', 'WV', '25504')
@@ -97,11 +100,53 @@ VALUES ('murtaugh@allsbrook.com', 'Murtaugh', 'Allsbrook', 3)
 INSERT INTO [User] (Email, FirstName, LastName, UserTypeId)
 VALUES ('nox@owen.com', 'Nox', 'Owen', 3)
 
-INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber)
-VALUES ('Weekly Mowing 3.5"', 'Mow yard diagonal', 1, 1)
+INSERT INTO JobStatus ([Name])
+VALUES ('Active')
 
-INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber)
-VALUES ('Weekly Mowing 2.5"', 'Watch out for tree stumps', 2, 2)
+INSERT INTO JobStatus ([Name])
+VALUES ('InActive')
 
-INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber)
-VALUES ('Bi-Weekly Mowing 3.25"', 'It gets really tall behind the fence', 2, 2)
+INSERT INTO JobBillingType ([Name])
+VALUES ('Weekly')
+
+INSERT INTO JobBillingType ([Name])
+VALUES ('Monthly')
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Weekly Mowing 3.5"', 'Mow yard diagonal', 1, 1, 1, 45, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Weekly Mowing 2.5"', 'Watch out for tree stumps', 2, 2, 2, 10000, 2)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Bi-Weekly Mowing 3.25"', 'It gets really tall behind the fence', 2, 2, 1, 55, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Monthly trimming"', 'Trim back hill', 11, 1, 1, 75, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Monthly trimming"', 'Trim back hill', 1, 1, 1, 150, 1)
+
+INSERT INTO JobInstance(JobId, CompletedDate, Price, CurrentRouteOrderNumber, ScheduleDate, IsPaid, CompletedUserId)
+VALUES (1, GETDATE(), NULL, 1, GETDATE(), 0, 1)
+
+INSERT INTO JobInstance(JobId, CompletedDate, Price, CurrentRouteOrderNumber, ScheduleDate, IsPaid, CompletedUserId)
+VALUES (1, NULL, NULL, NULL, GETDATE(), 0, NULL)
+
+INSERT INTO JobInstance(JobId, CompletedDate, Price, CurrentRouteOrderNumber, ScheduleDate, IsPaid, CompletedUserId)
+VALUES (1, NULL, NULL, NULL, NULL, 0, NULL)
+
+INSERT INTO JobInstance(JobId, CompletedDate, Price, CurrentRouteOrderNumber, ScheduleDate, IsPaid, CompletedUserId)
+VALUES (1, GETDATE(), NULL, NULL, GETDATE(), 0, 2)
+
+INSERT INTO JobInstance(JobId, CompletedDate, Price, CurrentRouteOrderNumber, ScheduleDate, IsPaid, CompletedUserId)
+VALUES (1, NULL, NULL, NULL, NULL, 0, NULL)
+
+INSERT INTO JobInstance(JobId, CompletedDate, Price, CurrentRouteOrderNumber, ScheduleDate, IsPaid, CompletedUserId)
+VALUES (1, GETDATE(), NULL, NULL, GETDATE(), 0, 1)
+
+INSERT INTO JobInstance(JobId, CompletedDate, Price, CurrentRouteOrderNumber, ScheduleDate, IsPaid, CompletedUserId)
+VALUES (2, NULL, NULL, NULL, NULL, 0, NULL)
+
+INSERT INTO JobInstance(JobId, CompletedDate, Price, CurrentRouteOrderNumber, ScheduleDate, IsPaid, CompletedUserId)
+VALUES (2, GETDATE(), NULL, NULL, GETDATE(), 0, 1)

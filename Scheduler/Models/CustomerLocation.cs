@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Scheduler.Models
@@ -17,7 +18,8 @@ namespace Scheduler.Models
         public string State { get; set; }
         [Required]
         public string Zip { get; set; }
-         public Customer Customer { get; set; }
+        public Customer Customer { get; set; }
+        public List<Job> Jobs { get; set; } 
 
 
     }

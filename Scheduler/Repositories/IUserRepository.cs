@@ -13,6 +13,6 @@ namespace Scheduler.Repositories
         User GetById(int id);
         List<UserType> GetUserTypes();
         void Reactivate(int id);
-        void UpdateUserType(User user);
+        void UpdateUser(User user);
     }
 }

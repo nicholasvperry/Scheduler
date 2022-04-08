@@ -99,7 +99,7 @@ namespace Scheduler.Controllers
         public IActionResult Put(int id, User user)
         {
 
-            _userRepository.UpdateUserType(user);
+            _userRepository.UpdateUser(user);
             return NoContent();
 
         }

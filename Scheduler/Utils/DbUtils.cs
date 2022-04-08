@@ -84,6 +84,23 @@ namespace Scheduler.Utils
         }
 
         /// <summary>
+        ///  Get a Decimal? (nullable Decimal) from a data reader object and gracefully handle NULL values
+        /// </summary>
+        /// <param name="reader">A SqlDataReader that has not exhausted it's result set.</param>
+        /// <param name="column">The name of the column from the result set refereed to by the reader.</param>
+        /// <returns>The value of the given column or null.</returns>
+        public static decimal? GetNullableDecimal(SqlDataReader reader, string column)
+        {
+            var ordinal = reader.GetOrdinal(column);
+            if (reader.IsDBNull(ordinal))
+            {
+                return null;
+            }
+
+            return reader.GetDecimal(ordinal);
+        }
+
+        /// <summary>
         ///  Determine if the value a given column is NULL
         /// </summary>
         /// <param name="reader">A SqlDataReader that has not exhausted it's result set.</param>

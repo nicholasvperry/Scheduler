@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Scheduler.Models
@@ -13,6 +15,9 @@ namespace Scheduler.Models
         [Required]
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public DateTime CreateDateTime { get; set; }
+        public List<CustomerLocation> CustomerLocations { get; set; }
+
         public string FullName
         {
             get

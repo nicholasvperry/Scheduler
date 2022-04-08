@@ -18,38 +18,10 @@ export default function Header() {
 
   return (
     <div>
-      <Navbar color="light" light expand="md">
-        <NavbarBrand tag={RRNavLink} to="/">Tabloid</NavbarBrand>
+      <Navbar lang='eng' color="light" light expand="md">
+        <NavbarBrand tag={RRNavLink} to="/">Scheduler</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
-            { /* When isLoggedIn === true, we will render the Home link */}
-            {isLoggedIn &&
-              <>
-                {/* <NavItem>
-                  <NavLink tag={RRNavLink} to="/">Home</NavLink>
-                </NavItem> */}
-
-                <NavItem>
-                  <NavLink tag={RRNavLink} to="/users">Users</NavLink>
-                </NavItem>
-
-                <NavItem>
-                  <NavLink tag={RRNavLink} to="/myposts">My Posts</NavLink>
-                </NavItem>
-              </>
-            }
-            {isLoggedIn &&
-              <NavItem>
-                <NavLink tag={RRNavLink} to="/category">Categories</NavLink>
-              </NavItem>
-            }
-              {isLoggedIn &&
-              <NavItem>
-                <NavLink tag={RRNavLink} to="/tag">Tags</NavLink>
-              </NavItem>
-            }
-          </Nav>
           <Nav navbar>
             {isLoggedIn &&
               <>
@@ -58,7 +30,7 @@ export default function Header() {
                 </NavItem>
 
                 <NavItem>
-                  <a aria-current="page" className="nav-link"
+                  <a aria-current="page" className="nav-link" href='/'
                     style={{ cursor: "pointer" }} onClick={logout}>Logout</a>
                 </NavItem>
 

@@ -11,5 +11,6 @@ namespace Scheduler.Repositories
         List<Job> GetAllJobsByLocationWithCustomer(int customerLocation);
         Job GetJobById(int id);
         public List<Job> GetAllJobsByCustomer(int customerId);
+        public void UpdateJob(Job job);
     }
 }

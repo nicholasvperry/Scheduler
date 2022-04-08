@@ -1,5 +1,5 @@
 CREATE TABLE [User] (
-  [Id] int PRIMARY KEY IDENTITY,
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
   [Email] nvarchar(255),
   [FirstName] nvarchar(255),
   [LastName] nvarchar(255),
@@ -7,23 +7,42 @@ CREATE TABLE [User] (
 )
 GO
 
+CREATE TABLE [UserNote] (
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
+  [UserId] int,
+  [Details] nvarchar(255),
+  [CreateDateTime] datetime,
+  [UserCreatedId] int
+)
+GO
+
 CREATE TABLE [UserType] (
-  [Id] int PRIMARY KEY IDENTITY,
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
   [Name] nvarchar(255)
 )
 GO
 
 CREATE TABLE [Customer] (
-  [Id] int PRIMARY KEY IDENTITY,
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
   [FirstName] nvarchar(255),
   [LastName] nvarchar(255),
   [PhoneNumber] nvarchar(255),
-  [Email] nvarchar(255)
+  [Email] nvarchar(255),
+  [CreateDateTime] datetime
+)
+GO
+
+CREATE TABLE [CustomerNote] (
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
+  [UserId] int,
+  [CustomerId] int,
+  [Details] nvarchar(255),
+  [CreateDateTime] datetime
 )
 GO
 
 CREATE TABLE [CustomerLocation] (
-  [Id] int PRIMARY KEY IDENTITY,
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
   [Name] nvarchar(255),
   [CustomerId] int,
   [StreetAddress] nvarchar(255),
@@ -34,17 +53,31 @@ CREATE TABLE [CustomerLocation] (
 GO
 
 CREATE TABLE [Job] (
-  [Id] int PRIMARY KEY IDENTITY,
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
   [Name] nvarchar(255),
   [Details] nvarchar(255),
   [CustomerLocationId] int,
-  [BillingTypeId] int,
-  [RouteOrderNumber] int
+  [RouteOrderNumber] int,
+  [JobStatusId] int,
+  [Price] decimal,
+  [BillingTypeId] int
+)
+GO
+
+CREATE TABLE [JobStatus] (
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
+  [Name] nvarchar(255)
+)
+GO
+
+CREATE TABLE [JobBillingType] (
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
+  [Name] nvarchar(255)
 )
 GO
 
 CREATE TABLE [JobInstance] (
-  [Id] int PRIMARY KEY IDENTITY,
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
   [JobId] int,
   [CompletedDate] datetime,
   [Price] decimal,
@@ -55,8 +88,17 @@ CREATE TABLE [JobInstance] (
 )
 GO
 
+CREATE TABLE [JobNote] (
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
+  [UserId] int,
+  [JobId] int,
+  [Details] nvarchar(255),
+  [CreateDateTime] datetime
+)
+GO
+
 CREATE TABLE [UserJobInstance] (
-  [Id] int PRIMARY KEY IDENTITY,
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
   [JobInstanceId] int,
   [UserId] int,
   [TimeIn] datetime,
@@ -65,7 +107,7 @@ CREATE TABLE [UserJobInstance] (
 GO
 
 CREATE TABLE [TimeSheet] (
-  [Id] int PRIMARY KEY IDENTITY,
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
   [JobInstanceId] int,
   [UserId] int,
   [TimeIn] datetime,
@@ -92,4 +134,28 @@ ALTER TABLE [UserJobInstance] ADD FOREIGN KEY ([UserId]) REFERENCES [User] ([Id]
 GO
 
 ALTER TABLE [TimeSheet] ADD FOREIGN KEY ([UserId]) REFERENCES [User] ([Id])
+GO
+
+ALTER TABLE [Job] ADD FOREIGN KEY ([JobStatusId]) REFERENCES [JobStatus] ([Id])
+GO
+
+ALTER TABLE [UserNote] ADD FOREIGN KEY ([UserId]) REFERENCES [User] ([Id])
+GO
+
+ALTER TABLE [JobNote] ADD FOREIGN KEY ([UserId]) REFERENCES [User] ([Id])
+GO
+
+ALTER TABLE [CustomerNote] ADD FOREIGN KEY ([CustomerId]) REFERENCES [Customer] ([Id])
+GO
+
+ALTER TABLE [CustomerNote] ADD FOREIGN KEY ([UserId]) REFERENCES [User] ([Id])
+GO
+
+ALTER TABLE [Job] ADD FOREIGN KEY ([BillingTypeId]) REFERENCES [JobBillingType] ([Id])
+GO
+
+ALTER TABLE [JobNote] ADD FOREIGN KEY ([JobId]) REFERENCES [Job] ([Id])
+GO
+
+ALTER TABLE [UserNote] ADD FOREIGN KEY ([UserCreatedId]) REFERENCES [User] ([Id])
 GO

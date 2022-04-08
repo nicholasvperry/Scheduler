@@ -9,9 +9,9 @@ export function UserProvider(props) {
   const [userTypes, setUserTypes] = useState([])
   const apiUrl = "https://localhost:44320";
   const [admins, setAdmins] = useState([])
-  const user = sessionStorage.getItem("user");
+  const user = sessionStorage.getItem("userProfile");
   const [isLoggedIn, setIsLoggedIn] = useState(user != null);
-
+  
 
   const login = (userObject) => {
     return fetch(`${apiUrl}/api/userprofile/getbyemail?email=${userObject.email}`)
