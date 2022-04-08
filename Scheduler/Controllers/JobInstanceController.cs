@@ -37,8 +37,12 @@ namespace Scheduler.Controllers
 
         // POST api/<JobInstanceController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(JobInstance jobInstance)
         {
+            _jobInstanceRepository.Add(jobInstance);
+            jobInstance.CompletedUserId = null;
+            jobInstance.CompletedDate = null;
+            return CreatedAtAction("Get", new { id = jobInstance.Id }, jobInstance);
         }
 
         // PUT api/<JobInstanceController>/5

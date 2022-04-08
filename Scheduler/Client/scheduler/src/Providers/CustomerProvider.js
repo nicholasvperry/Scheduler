@@ -19,6 +19,11 @@ export function CustomerProvider(props) {
       .then((res) => res.json())
   }
 
+  const GetCustomerByInstanceIdWithJobInformation = (id) => {
+    return fetch(`${apiUrl}/api/customer/instance/${id}`)
+      .then((res) => res.json())
+  }
+
   const updateCustomer = customer => {
     return fetch(`https://localhost:44360/api/User/${customer.id}`, {
       method: "PUT",
@@ -30,7 +35,7 @@ export function CustomerProvider(props) {
   }
 
   return (
-    <CustomerContext.Provider value={{ getAllCustomers, getCustomerByIdWithJobInformation, updateCustomer, customers, setCustomers }}>
+    <CustomerContext.Provider value={{ getAllCustomers, getCustomerByIdWithJobInformation, updateCustomer, customers, setCustomers, GetCustomerByInstanceIdWithJobInformation }}>
       {props.children}
     </CustomerContext.Provider>
   );

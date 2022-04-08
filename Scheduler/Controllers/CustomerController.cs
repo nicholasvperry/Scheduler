@@ -35,6 +35,18 @@ namespace Scheduler.Controllers
             return Ok(customer);
         }
 
+        // GET api/<CustomerController>/5
+        [HttpGet("instance/{id}")]
+        public IActionResult GetCustomerByInstanceIdWithJobInformation(int id)
+        {
+            var customer = _customerRepository.GetCustomerByInstanceIdWithJobInformation(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return Ok(customer);
+        }
+
         // POST api/<CustomerController>
         [HttpPost]
         public IActionResult Post(Customer customer)

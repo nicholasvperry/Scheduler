@@ -81,6 +81,83 @@ namespace Scheduler.Repositories
             }
         }
 
+        public Job GetJobByInstanceId(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                       SELECT j.Id AS JobId, j.[Name] AS JobName, j.Details, j.CustomerLocationId, j.RouteOrderNumber, j.JobStatusId, j.Price, j.BillingTypeId,
+ji.CompletedDate, ji.CompletedUserId, ji.CurrentRouteOrderNumber, ji.Id AS InstanceId, ji.IsPaid, ji.Price, ji.ScheduleDate,
+                          cl.Id AS LocationId, cl.Name AS LocationName, cl.StreetAddress, cl.City, cl.State, cl.Zip,
+                          c.Id AS CustomerId, c.FirstName, c.LastName, c.PhoneNumber, c.Email,
+                          jn.Id as JobNoteId, jn.UserId, jn.Details AS NoteDetails, jn.CreateDateTime as NoteCreateDateTime,
+                          u.Email, u.FirstName, u.LastName
+                       FROM Job j
+                       LEFT JOIN CustomerLocation cl ON j.CustomerLocationId = cl.Id
+                       LEFT JOIN JobInstance ji ON j.Id = ji.JobId
+                       LEFT JOIN Customer c ON cl.CustomerId = c.Id
+                       LEFT JOIN JobNote jn ON j.Id = jn.JobId
+                       LEFT JOIN [User] u ON jn.UserId = u.Id
+                        WHERE ji.id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    var reader = cmd.ExecuteReader();
+
+                    Job job = null;
+
+                    while (reader.Read())
+                    {
+                        job = new Job()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("JobId")),
+                            Name = reader.GetString(reader.GetOrdinal("JobName")),
+                            Details = reader.GetString(reader.GetOrdinal("Details")),
+                            CustomerLocationId = reader.GetInt32(reader.GetOrdinal("CustomerLocationId")),
+                            RouteOrderNumber = reader.GetInt32(reader.GetOrdinal("RouteOrderNumber")),
+                            JobStatusId = reader.GetInt32(reader.GetOrdinal("JobStatusId")),
+                            Price = reader.GetDecimal(reader.GetOrdinal("Price")),
+                            BillingTypeId = reader.GetInt32(reader.GetOrdinal("BillingTypeId")),
+                            //JobNote = new JobNote()
+                            //{
+                            //    Id = DbUtils.GetNullableInt(reader.GetOrdinal("JobNoteId")),
+                            //    UserId = DbUtils.GetNullableInt(reader.GetOrdinal("UserId")),
+                            //    Details = DbUtils.GetNullableString(reader.GetOrdinal("NoteDetails")),
+                            //    CreateDateTime = DbUtils.GetNullableDateTime(reader.GetOrdinal("NoteCreateDateTime"))
+
+
+                            //},
+                            CustomerLocation = new CustomerLocation()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("LocationId")),
+                                Name = reader.GetString(reader.GetOrdinal("LocationName")),
+                                StreetAddress = reader.GetString(reader.GetOrdinal("StreetAddress")),
+                                City = reader.GetString(reader.GetOrdinal("City")),
+                                State = reader.GetString(reader.GetOrdinal("State")),
+                                Zip = reader.GetString(reader.GetOrdinal("Zip")),
+                                CustomerId = reader.GetInt32(reader.GetOrdinal("CustomerId")),
+                                Customer = new Customer()
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("CustomerId")),
+                                    FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                    LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                                    PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber")),
+                                    Email = reader.GetString(reader.GetOrdinal("Email")),
+                                }
+                            },
+
+                        };
+                    }
+
+                    reader.Close();
+
+                    return job;
+                }
+            }
+        }
+
 
         public List<Job> GetAllJobsByLocationWithCustomer(int customerLocationId)
         {
@@ -105,16 +182,16 @@ namespace Scheduler.Repositories
                     cmd.Parameters.AddWithValue("@customerLocationId", customerLocationId);
                     var reader = cmd.ExecuteReader();
 
-                    var posts = new List<Job>();
+                    var jobs = new List<Job>();
 
                     while (reader.Read())
                     {
-                        posts.Add(NewJobFromReader(reader));
+                        jobs.Add(NewJobFromReader(reader));
                     }
 
                     reader.Close();
 
-                    return posts;
+                    return jobs;
                 }
             }
         }

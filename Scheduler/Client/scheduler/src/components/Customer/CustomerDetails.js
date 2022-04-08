@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import { CustomerContext } from "../../Providers/CustomerProvider";
 import { CustomerLocation } from "./CustomerLocation";
+import Button from 'react-bootstrap/Button';
 
 
 export const CustomerDetails = () => {
@@ -75,6 +76,11 @@ export const CustomerDetails = () => {
                 <div className="customerName">
                     <h1>{customer.fullName}</h1>
                 </div>
+                <Button
+                className="customerDetailsButton backButton"
+                variant="secondary"
+                onClick={() => navigate(-1)}
+                >Back To Customers</Button>
                 <br />
 
                 <h4>Locations</h4>

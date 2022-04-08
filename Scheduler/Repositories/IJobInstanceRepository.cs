@@ -7,5 +7,6 @@ namespace Scheduler.Repositories
     {
         public List<JobInstance> GetAll();
         List<JobInstance> GetAllByJobId(int id);
+        public void Add(JobInstance jobInstance);
     }
 }

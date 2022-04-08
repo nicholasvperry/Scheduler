@@ -47,6 +47,17 @@ namespace Scheduler.Controllers
             return Ok(job);
         }
 
+        [HttpGet("jobInstance/{id}")]
+        public IActionResult GetAllJobsByInstanceId(int id)
+        {
+            var job = _jobRepository.GetJobByInstanceId(id);
+            if (job == null)
+            {
+                return NotFound();
+            }
+            return Ok(job);
+        }
+
         [HttpGet("location/{id}")]
         public IActionResult GetAllJobsByLocationWithCustomer(int id)
         {

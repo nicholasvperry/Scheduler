@@ -19,8 +19,15 @@ namespace Scheduler.Models
         [Required]
         public string Zip { get; set; }
         public Customer Customer { get; set; }
-        public List<Job> Jobs { get; set; } 
-
+        public List<Job> Jobs { get; set; }
+        public string FullAddress
+        {
+            get
+            {
+                return $"{StreetAddress}" +
+                    $" {City}" + $"{State}, " + $"{Zip}";
+            }
+        }
 
     }
 }

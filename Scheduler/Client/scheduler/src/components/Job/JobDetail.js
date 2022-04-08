@@ -3,12 +3,18 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import { JobContext } from "../../Providers/JobProvider";
+import Button from 'react-bootstrap/Button';
+import { JobInstanceContext } from "../../Providers/JobInstanceProvider";
+import JobInstance from "../JobInstance/JobInstance";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 
 export const JobDetails = () => {
     const { getJobById } = useContext(JobContext);
+    const { getInstancesByJobId, addInstance } = useContext(JobInstanceContext);
     const { id } = useParams();
     const [job, setJob] = useState()
+    const [jobInstances, setJobInstances] = useState()
     const navigate = useNavigate();
     //added this just to be able to update state
     //Added swalProps to useEffect and setSwalProps to add comment
@@ -18,10 +24,16 @@ export const JobDetails = () => {
     //get current user
     const user = JSON.parse(sessionStorage.getItem("userProfile"))
 
-    //add refr
+
     useEffect(() => {
         getJobById(id)
             .then(setJob)
+
+    }, [refreshProps]);
+
+    useEffect(() => {
+        getInstancesByJobId(id)
+            .then(setJobInstances)
 
     }, [refreshProps]);
 
@@ -30,39 +42,58 @@ export const JobDetails = () => {
         return null;
     }
 
-    // let formattedDate = date.toLocaleDateString('en-US')
+    if (!jobInstances) {
+        return null;
+    }
+    
+    //get main route order number to add to new job instance
+    const routeOrderNumber = job.routeOrderNumber
 
-    // const handleCommentModal = () => {
-    //     Swal.fire({
-    //         title: 'Comment',
-    //         html: `<input type="text" id="subject" class="swal2-input" placeholder="Subject">
-    //         <textarea cols="30" rows="5" id="content" class="swal2-input" placeholder="Content">`,
-    //         confirmButtonText: 'Save',
-    //         focusConfirm: false,
-    //         showCancelButton: true,
-    //         preConfirm: () => {
-    //             const subject = Swal.getPopup().querySelector('#subject').value
-    //             const content = Swal.getPopup().querySelector('#content').value
-    //             if (!subject || !content) {
-    //                 Swal.showValidationMessage(`Please enter subject and content`)
-    //             }
-    //             return { subject: subject, content: content }
-    //         }
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             addComment({
-    //                 postId: id,
-    //                 userProfileId: user.id,
-    //                 subject: result.value.subject,
-    //                 content: result.value.content
-    //             })
-    //                 .then(setSwalProps) //setSwalProps just to update state to refresh comments
+    const handleAddModal = () => {
+        Swal.fire({
+            title: 'Service',
+            html: `<input type="text" id="name" class="swal2-input" placeholder="Name">
+            <textarea cols="30" rows="5" id="details" class="swal2-input" placeholder="Details"></textarea>
+            <div>Schedule Date</div>
+            <input type="date" class="swal2-input" id="isPaid">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+                <label class="form-check-label" for="checkbox1">
+                    checkbox1
+                </label>
+            </div>
+            `,
+            confirmButtonText: 'Save',
+            focusConfirm: false,
+            showCancelButton: true,
+            focusConfirm: false,
+            preConfirm: () => {
+                const name = Swal.getPopup().querySelector('#name').value
+                const details = Swal.getPopup().querySelector('#details').value
+                const isPaid = Swal.getPopup().querySelector('#isPaid').value.checked
+                if (!name || !details) {
+                    Swal.showValidationMessage(`Please enter name and details`)
+                }
+                return { name: name, details: details, isPaid: isPaid }
+               
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                debugger
+                console.log(result.value.name)
+                console.log(result.value.details)
+                console.log(result.value.isPaid)
+                // addInstance({
+                //     name: result.value.name,
+                //     details: result.value.details
+                // })
+                //     .then(setRefreshProps) //setSwalProps just to update state to refresh comments
 
-    //         }
-    //     })
+            }
+        })
 
 
-    // }
+    }
 
 
 
@@ -74,20 +105,139 @@ export const JobDetails = () => {
                 <div className="jobName">
                     <h1>Property Details</h1>
                 </div>
+                <Button
+                    className="addJob"
+                    variant="secondary"
+                    onClick={handleAddModal}
+                >Add Service</Button>
+                <Button
+                    className="jobDetailsButton backButton"
+                    variant="secondary"
+                    onClick={() => navigate(-1)}
+                >Back To Locations</Button>
+
                 <br />
                 <div className="jobLocationCard">
                     <h6>Client</h6>
                     <div>{job.customerLocation.customer.fullName}</div>
-                    <br/>
+                    <br />
                     <div>{job.customerLocation.streetAddress}</div>
                     <div>{job.customerLocation.city}, {job.customerLocation.state} {job.customerLocation.zip}</div>
                 </div>
-                <br/>
+                <br />
+
+                <div className="unscheduledInstances">
+                    <h6>Unscheduled Services</h6>
+                    <div className="unscheduledJobCards">
+                        <table cellPadding={15} cellSpacing={0} className="customerTable">
+                            <thead>
+                                <tr className="tableRowName">
+                                    <th className="icon"></th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Details
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {jobInstances.map((jobInstance) => {
+                                    //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
+                                    if (jobInstance.scheduleDate == null) {
+
+                                        return (
+                                            <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} />
+
+                                        )
+                                    }
+
+                                })}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <div className="upcomingInstances">
                     <h6>Upcoming Services</h6>
-                    
+                    <div className="upcomingJobCards">
+                        <table cellPadding={15} cellSpacing={0} className="customerTable">
+                            <thead>
+                                <tr className="tableRowName">
+                                    <th className="icon"></th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Details
+                                    </th>
+                                    <th>
+                                        Scheduled Date
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {jobInstances.map((jobInstance) => {
+                                    //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
+                                    if (jobInstance.scheduleDate !== null && !jobInstance.completedDate) {
+
+                                        return (
+                                            <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} />
+
+                                        )
+                                    }
+
+                                })}
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+                <div className="completedInstances">
+                    <h6>Completed Services</h6>
+                    <div className="completedJobCards">
+                        <table cellPadding={15} cellSpacing={0} className="customerTable">
+                            <thead>
+                                <tr className="tableRowName">
+                                    <th className="icon"></th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Details
+                                    </th>
+                                    <th>
+                                        Scheduled Date
+                                    </th>
+                                    <th>
+                                        Completed Date
+                                    </th>
+                                    <th>
+                                        Completed By
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {jobInstances.map((jobInstance) => {
+                                    //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
+                                    if (jobInstance.completedDate) {
+
+                                        return (
+                                            <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} />
+
+                                        )
+                                    }
+
+                                })}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </>
     );

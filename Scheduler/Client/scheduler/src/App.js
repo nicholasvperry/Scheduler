@@ -7,6 +7,7 @@ import { CustomerProvider } from './Providers/CustomerProvider';
 import { SideBar } from './components/SideBar/SideBar';
 import { useContext } from 'react';
 import { JobProvider } from './Providers/JobProvider';
+import { JobInstanceProvider } from './Providers/JobInstanceProvider';
 
 
 function App() {
@@ -27,15 +28,17 @@ function App() {
         <Router>
           <CustomerProvider>
             <JobProvider>
-              <div className='header'>
-                <Header />
-              </div>
-              <div className='allViews'>
-                <SideBar />
-                <div className='applicationViews'>
-                  <ApplicationViews />
+              <JobInstanceProvider>
+                <div className='header'>
+                  <Header />
                 </div>
-              </div>
+                <div className='allViews'>
+                  <SideBar />
+                  <div className='applicationViews'>
+                    <ApplicationViews />
+                  </div>
+                </div>
+              </JobInstanceProvider>
             </JobProvider>
           </CustomerProvider>
         </Router>

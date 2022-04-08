@@ -10,5 +10,6 @@ namespace Scheduler.Repositories
         List<Customer> GetAll();
         Customer GetCustomerByIdWithJobInformation(int id);
         public void UpdateCustomer(Customer customer);
+        public Customer GetCustomerByInstanceIdWithJobInformation(int id);
     }
 }

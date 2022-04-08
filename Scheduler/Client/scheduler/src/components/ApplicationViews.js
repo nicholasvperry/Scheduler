@@ -7,6 +7,7 @@ import { UserContext } from "../Providers/UserProvider";
 import CustomerList from "./Customer/CustomerList";
 import { CustomerDetails } from "./Customer/CustomerDetails";
 import { JobDetails } from "./Job/JobDetail";
+import { JobInstanceDetails } from "./JobInstance/JobInstanceDetails";
 
 
 export default function ApplicationViews() {
@@ -31,6 +32,9 @@ export default function ApplicationViews() {
         <Route path="/customer/:id" element={<CustomerDetails />} />
 
         <Route path="/job/:id" element={<JobDetails />} />
+
+        <Route path="/jobinstance/:id" element={<JobInstanceDetails />} />
+
         
       </Routes>
     );

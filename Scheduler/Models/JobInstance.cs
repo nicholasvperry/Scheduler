@@ -20,6 +20,6 @@ namespace Scheduler.Models
         
         public bool IsPaid { get; set; }
         public int? CompletedUserId { get; set; }
-
+        public User User { get; set; }
     }
 }
