@@ -36,8 +36,8 @@ const JobInstance = ({ jobObject, jobInstanceObject }) => {
 
     }
 
-    let scheduledDate = Moment(jobInstanceObject.scheduleDate).format(`MM-DD-YYYY, h:mm a`)
-    let completedDate = Moment(jobInstanceObject.completedDate).format(`MM-DD-YYYY, h:mm a`)
+    let scheduledDate = Moment(jobInstanceObject.scheduleDate).format(`MM-DD-YYYY`)
+    let completedDate = Moment(jobInstanceObject.completedDate).format(`MM-DD-YYYY`)
 
     const handleClickRow = () => {
         navigate(`/jobInstance/${jobInstanceObject.id}`)

@@ -7,13 +7,13 @@
 .applicationViews {
     padding-top: 75px;
     width: 100%;
+    padding-left: 50px;
 }
 
 body {
     margin: 0;
     padding: 0;
 }
-
 
 .allViews{
     width: 100vw;
@@ -27,6 +27,10 @@ body {
     right: 0px;
 }
 
+/* hide side panel on react date range*/
+.rdrDefinedRangesWrapper {
+    display: none;
+  }
 /* ------- This is for the sidebar --------- */
 .sidebar {
     height: 100%;

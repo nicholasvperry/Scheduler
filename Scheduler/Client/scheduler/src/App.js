@@ -27,19 +27,21 @@ function App() {
       <div className='App'>
         <Router>
           <CustomerProvider>
-            <JobProvider>
-              <JobInstanceProvider>
-                <div className='header'>
-                  <Header />
-                </div>
-                <div className='allViews'>
-                  <SideBar />
-                  <div className='applicationViews'>
-                    <ApplicationViews />
+            <UserProvider>
+              <JobProvider>
+                <JobInstanceProvider>
+                  <div className='header'>
+                    <Header />
                   </div>
-                </div>
-              </JobInstanceProvider>
-            </JobProvider>
+                  <div className='allViews'>
+                    <SideBar />
+                    <div className='applicationViews'>
+                      <ApplicationViews />
+                    </div>
+                  </div>
+                </JobInstanceProvider>
+              </JobProvider>
+            </UserProvider>
           </CustomerProvider>
         </Router>
       </div>

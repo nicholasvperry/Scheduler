@@ -49,7 +49,7 @@ export function UserProvider(props) {
   };
 
   const getAllUsers = () => {
-    return fetch(`${apiUrl}/api/user`)
+    return fetch(`${apiUrl}/api/userprofile`)
       .then((res) => res.json())
       .then(setUsers)
   }

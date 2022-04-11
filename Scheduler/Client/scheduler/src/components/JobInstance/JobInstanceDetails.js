@@ -79,8 +79,8 @@ export const JobInstanceDetails = () => {
     let jobObject = customerInstance.customerLocations[0].jobs[0]
     let instanceObject = customerInstance.customerLocations[0].jobs[0].jobInstances[0]
 
-    let scheduledDate = Moment(instanceObject.scheduleDate).format(`MM-DD-YYYY, h:mm a`)
-    let completedDate = Moment(instanceObject.completedDate).format(`MM-DD-YYYY, h:mm a`)
+    let scheduledDate = Moment(instanceObject.scheduleDate).format(`MM-DD-YYYY`)
+    let completedDate = Moment(instanceObject.completedDate).format(`MM-DD-YYYY`)
     let userCompleted = customerInstance.customerLocations[0].jobs[0].jobInstances[0].user.fullName
 
     return (

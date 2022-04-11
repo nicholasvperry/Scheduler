@@ -7,6 +7,9 @@ import Button from 'react-bootstrap/Button';
 import { JobInstanceContext } from "../../Providers/JobInstanceProvider";
 import JobInstance from "../JobInstance/JobInstance";
 import { ConstructionOutlined } from "@mui/icons-material";
+import { InstanceForm } from "../JobInstance/JobInstanceForm";
+import {motion} from "framer-motion"
+
 
 
 export const JobDetails = () => {
@@ -49,66 +52,18 @@ export const JobDetails = () => {
     //get main route order number to add to new job instance
     const routeOrderNumber = job.routeOrderNumber
 
-    const handleAddModal = () => {
-        Swal.fire({
-            title: 'Service',
-            html: `<input type="text" id="name" class="swal2-input" placeholder="Name">
-            <textarea cols="30" rows="5" id="details" class="swal2-input" placeholder="Details"></textarea>
-            <div>Schedule Date</div>
-            <input type="date" class="swal2-input" id="isPaid">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    checkbox1
-                </label>
-            </div>
-            `,
-            confirmButtonText: 'Save',
-            focusConfirm: false,
-            showCancelButton: true,
-            focusConfirm: false,
-            preConfirm: () => {
-                const name = Swal.getPopup().querySelector('#name').value
-                const details = Swal.getPopup().querySelector('#details').value
-                const isPaid = Swal.getPopup().querySelector('#isPaid').value.checked
-                if (!name || !details) {
-                    Swal.showValidationMessage(`Please enter name and details`)
-                }
-                return { name: name, details: details, isPaid: isPaid }
-               
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                debugger
-                console.log(result.value.name)
-                console.log(result.value.details)
-                console.log(result.value.isPaid)
-                // addInstance({
-                //     name: result.value.name,
-                //     details: result.value.details
-                // })
-                //     .then(setRefreshProps) //setSwalProps just to update state to refresh comments
-
-            }
-        })
-
-
-    }
-
-
-
 
 
     return (
         <>
             <div className="jobDetailCard">
                 <div className="jobName">
-                    <h1>Property Details</h1>
+                    <h1>Job Details</h1>
                 </div>
                 <Button
                     className="addJob"
                     variant="secondary"
-                    onClick={handleAddModal}
+                    onClick={() => navigate(`/addservice/${id}`)}
                 >Add Service</Button>
                 <Button
                     className="jobDetailsButton backButton"
@@ -120,7 +75,10 @@ export const JobDetails = () => {
                 <div className="jobLocationCard">
                     <h6>Client</h6>
                     <div>{job.customerLocation.customer.fullName}</div>
+                    <div>{job.customerLocation.customer.phoneNumber}</div>
+                    <div>{job.customerLocation.customer.email}</div>
                     <br />
+                    <h6>Address</h6>
                     <div>{job.customerLocation.streetAddress}</div>
                     <div>{job.customerLocation.city}, {job.customerLocation.state} {job.customerLocation.zip}</div>
                 </div>

@@ -118,7 +118,7 @@ namespace Scheduler.Repositories
                                ut.Name AS UserTypeName
                           FROM [User] u
                                LEFT JOIN UserType ut on u.UserTypeId = ut.Id
-                               Order By DisplayName
+                               Order By UserTypeName
                     ";
 
                     var reader = cmd.ExecuteReader();
@@ -128,7 +128,7 @@ namespace Scheduler.Repositories
                     {
                         users.Add(new User()
                         {
-                            Id = DbUtils.GetInt(reader, "UserId"),
+                            Id = DbUtils.GetInt(reader, "Id"),
                             FirstName = DbUtils.GetString(reader, "FirstName"),
                             LastName = DbUtils.GetString(reader, "LastName"),
                             Email = DbUtils.GetString(reader, "Email"),

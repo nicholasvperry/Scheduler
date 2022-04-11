@@ -8,6 +8,7 @@ import CustomerList from "./Customer/CustomerList";
 import { CustomerDetails } from "./Customer/CustomerDetails";
 import { JobDetails } from "./Job/JobDetail";
 import { JobInstanceDetails } from "./JobInstance/JobInstanceDetails";
+import { InstanceForm } from "./JobInstance/JobInstanceForm";
 
 
 export default function ApplicationViews() {
@@ -33,7 +34,10 @@ export default function ApplicationViews() {
 
         <Route path="/job/:id" element={<JobDetails />} />
 
+        <Route path="/addservice/:id" element={<InstanceForm />} />
         <Route path="/jobinstance/:id" element={<JobInstanceDetails />} />
+
+
 
         
       </Routes>
