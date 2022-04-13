@@ -18,9 +18,9 @@ export const SidebarData = [
 
     },
     {
-        title: "Jobs",
+        title: "Schedule",
         icon: <AgricultureIcon />,
-        link: "/jobs"
+        link: "/schedule"
 
     },
 ]

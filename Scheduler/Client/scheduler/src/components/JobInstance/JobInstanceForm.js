@@ -10,11 +10,13 @@ import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { addDays } from 'date-fns';
 import DateRangePicker from "react-date-range/dist/components/DateRangePicker";
+import { UserJobInstanceContext } from "../../Providers/UserJobInstanceProvider";
 
 export const InstanceForm = () => {
     const { getJobById } = useContext(JobContext);
     const { getAllUsers, users } = useContext(UserContext)
-    const { addInstance } = useContext(JobInstanceContext)
+    const { addInstance, getJobInstancesByJobId, jobInstancesById } = useContext(JobInstanceContext)
+    const { addUserInstance } = useContext(UserJobInstanceContext)
     const [refreshProps, setRefreshProps] = useState()
     const [job, setJob] = useState()
     const navigate = useNavigate()
@@ -22,6 +24,7 @@ export const InstanceForm = () => {
     const [instance, setInstance] = useState()
     //state for checkboxes
     const [checked, setChecked] = useState([]);
+    const [employeeChecked, setEmployeeChecked] = useState([]);
     const [recurring, setRecurring] = useState(true)
 
     //for react-date-range
@@ -65,6 +68,16 @@ export const InstanceForm = () => {
         setChecked(updatedList);
     };
 
+    const handleEmployeeCheck = (event) => {
+        var updatedList = [...employeeChecked];
+        if (event.target.checked) {
+            updatedList = [...employeeChecked, event.target.value];
+        } else {
+            updatedList.splice(employeeChecked.indexOf(event.target.value), 1);
+        }
+        setEmployeeChecked(updatedList);
+    };
+
     //make a copy of state to manipulate for date and time
     const handleControlledInputChange = (event) => {
         //...product make a copy of current state
@@ -78,6 +91,8 @@ export const InstanceForm = () => {
 
     }
 
+
+
     const toggleChange = () => {
         if (recurring === true) {
             setRecurring(false)
@@ -89,7 +104,7 @@ export const InstanceForm = () => {
 
 
     const addSingleInstance = () => {
-        debugger
+
         addInstance({
             jobId: id,
             completedDate: null,
@@ -99,14 +114,113 @@ export const InstanceForm = () => {
             isPaid: false,
             completedUserId: null
         }).then(() => navigate(`/job/${id}`))
+
     }
 
-    const addMultipleInstances = () => {
+    const addEmployeesToSchedule = () => {
+
+        getJobInstancesByJobId(id).then(() => {
+            jobInstancesById.forEach((j) => {
+                
+                const employeesArray = [employeeChecked.map(employee => {
+                    return new Promise(() => {
+
+                        fetch(`https://localhost:44320/api/UserJobInstance`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                JobInstanceId: j.id,
+                                UserId: employee,
+                                TimeIn: null,
+                                TimeOut: null
+                            }),
+                        })
+                    })
+                })]
+                Promise.all(employeesArray)
+            })
+        })
+    }
+
+
+    const findAllDays = (selectedDays) => {
+        //calculates days between two dates
         var startDate = new Date(Moment(dates[0].startDate).format(`MM-DD-YYYY`))
         var endDate = new Date(Moment(dates[0].endDate).format(`MM-DD-YYYY`))
-        var numberOfDays = (endDate.getTime() - startDate.getTime())/(24 * 60 * 60 * 1000)
-        alert(numberOfDays)
+        var numberOfDays = (endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)
+        // alert(numberOfDays)
 
+        //finds all days between dates. 0 = Sunday 1 = Monday
+        var start = Moment(dates[0].startDate), // Sept. 1st
+            end = Moment(dates[0].endDate), // Nov. 2nd
+            day = parseInt(selectedDays); //this is the value coming from state
+
+        var result = [];
+        var current = start.clone();
+
+        while (current.day(7 + day).isBefore(end)) {
+            result.push(current.clone());
+        }
+
+        console.log(result.map(m => m.format('LLLL')));
+
+        //format the date for c#
+        const formattedResults = result.map(m => m.format('YYYY-MM-DD'))
+        // debugger
+
+        //make an array of fetch calls for the promise.all
+        //map through dates selected in browser
+        const resultsArray = [formattedResults.map(date => {
+            //make promise for each date
+            return new Promise(() => {
+                fetch(`https://localhost:44320/api/JobInstance`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        jobId: id,
+                        completedDate: null,
+                        price: null,
+                        currentRouteOrder: job.routeOrderNumber,
+                        scheduleDate: date,
+                        isPaid: false,
+                        completedUserId: null
+                    }),
+                })
+            })
+        })]
+        //run promise.all with array of fetch calls created
+        //get by id then loop through and add employees to each instance
+        Promise.all(resultsArray)
+            .then(() => {
+                addEmployeesToSchedule()
+            })
+        // .then(() => {
+        //     return fetch(`https://localhost:44320/api/jobInstance/${id}`)
+        // }).then((response) => {
+        //     debugger
+        //     return response.json()
+        // }).then((data) => {
+        //     debugger
+        //     data.map(instance => {
+
+        //     })
+
+
+        // })
+    }
+
+
+
+    const addMultipleInstances = () => {
+
+
+        checked.forEach((c, i) => {
+            findAllDays(c)
+        })
     }
 
     return (
@@ -137,19 +251,19 @@ export const InstanceForm = () => {
                             </div>
 
                             <div className="days">
-                                <input value="monday" onChange={handleCheck} type="checkbox" />
+                                <input value={1} onChange={handleCheck} type="checkbox" />
                                 <span>Monday</span><br />
-                                <input value="tuesday" onChange={handleCheck} type="checkbox" />
+                                <input value={2} onChange={handleCheck} type="checkbox" />
                                 <span>Tuesday</span><br />
-                                <input value="wednesday" onChange={handleCheck} type="checkbox" />
+                                <input value={3} onChange={handleCheck} type="checkbox" />
                                 <span>Wednesday</span><br />
-                                <input value="thursday" onChange={handleCheck} type="checkbox" />
+                                <input value={4} onChange={handleCheck} type="checkbox" />
                                 <span>Thursday</span><br />
-                                <input value="friday" onChange={handleCheck} type="checkbox" />
+                                <input value={5} onChange={handleCheck} type="checkbox" />
                                 <span>Friday</span><br />
-                                <input value="saturday" onChange={handleCheck} type="checkbox" />
+                                <input value={6} onChange={handleCheck} type="checkbox" />
                                 <span>Saturday</span><br />
-                                <input value="sunday" onChange={handleCheck} type="checkbox" />
+                                <input value={0} onChange={handleCheck} type="checkbox" />
                                 <span>Sunday</span>
 
                                 <div className="duration">
@@ -157,14 +271,14 @@ export const InstanceForm = () => {
                                     <input type="date" id="startDate" name="startDate" required onChange={handleControlledInputChange}></input>
                                     <h6>To:</h6>
                                     <input type="date" id="endDate" name="endDate" required onChange={handleControlledInputChange}></input> */}
-                                
+
                                     <DateRangePicker
                                         editableDateInputs={true}
                                         onChange={item => setDates([item.selection])}
                                         moveRangeOnFirstSelection={false}
                                         ranges={dates}
-                                        
-                                        
+
+
                                     />
                                 </div>
 
@@ -184,7 +298,7 @@ export const InstanceForm = () => {
                         <div className="list-container">
                             {users.map((user, index) => (
                                 <div key={index}>
-                                    <input value={user.id} type="checkbox" onChange={handleCheck} />
+                                    <input value={user.id} type="checkbox" onChange={handleEmployeeCheck} />
                                     <span>{user.fullName}</span>
                                 </div>
                             ))}

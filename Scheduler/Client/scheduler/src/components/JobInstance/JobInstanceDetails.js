@@ -6,14 +6,22 @@ import Button from 'react-bootstrap/Button';
 import { JobInstanceContext } from "../../Providers/JobInstanceProvider";
 import { CustomerContext } from "../../Providers/CustomerProvider";
 import Moment from "moment";
+import { UserJobInstanceContext } from "../../Providers/UserJobInstanceProvider";
+import { UserContext } from "../../Providers/UserProvider";
+import { Input } from "@mui/icons-material";
 
 
 export const JobInstanceDetails = () => {
-    const { getInstancesByJobId, updateInstance } = useContext(JobInstanceContext);
+    const { getJobInstancesByJobId, updateInstance, jobInstancesById } = useContext(JobInstanceContext);
+    const { getUserInstancesByJobInstanceId } = useContext(UserJobInstanceContext)
     const { GetCustomerByInstanceIdWithJobInformation } = useContext(CustomerContext)
+    const { getAllUsers, users } = useContext(UserContext)
+
     const { id } = useParams();
-    const [jobInstance, setJobInstances] = useState()
+    const [jobInstance, setJobInstances] = useState([])
     const [customerInstance, setCustomerInstance] = useState()
+    //set state as empty array
+    const [userJobInstances, setUserJobInstances] = useState([])
     const navigate = useNavigate();
     //added this just to be able to update state
     //Added swalProps to useEffect and setSwalProps to add comment
@@ -23,11 +31,13 @@ export const JobInstanceDetails = () => {
     //get current user
     const user = JSON.parse(sessionStorage.getItem("userProfile"))
 
-    //add refr
     useEffect(() => {
-        getInstancesByJobId(id)
-            .then(setJobInstances)
+        getAllUsers()
+    }, [])
 
+    useEffect(() => {
+        getJobInstancesByJobId(id)
+            
     }, [refreshProps]);
 
     useEffect(() => {
@@ -36,45 +46,25 @@ export const JobInstanceDetails = () => {
 
     }, [refreshProps]);
 
+    useEffect(() => {
+        getUserInstancesByJobInstanceId(id)
+            .then(setUserJobInstances)
+    }, [refreshProps])
+    
     //this needed to be added because when page loads there is no customer
-    if (!jobInstance) {
-        return null;
-    }
+    
     if (!customerInstance) {
         return null;
     }
-
-    const handleEditModal = () => {
-        Swal.fire({
-            title: 'Comment',
-            html: `<input type="text" id="subject" class="swal2-input" placeholder="Subject">
-            <textarea cols="30" rows="5" id="content" class="swal2-input" placeholder="Content">`,
-            confirmButtonText: 'Save',
-            focusConfirm: false,
-            showCancelButton: true,
-            preConfirm: () => {
-                const subject = Swal.getPopup().querySelector('#subject').value
-                const content = Swal.getPopup().querySelector('#content').value
-                if (!subject || !content) {
-                    Swal.showValidationMessage(`Please enter subject and content`)
-                }
-                return { subject: subject, content: content }
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                updateInstance({
-                    postId: id,
-                    userProfileId: user.id,
-                    subject: result.value.subject,
-                    content: result.value.content
-                })
-                    .then(refreshProps) //setSwalProps just to update state to refresh comments
-
-            }
-        })
+    if (!userJobInstances) {
+        return null;
     }
 
 
+    const handleEmployeeScheduleChange = () => {
+        debugger
+        alert(`you clicked me ${users.id}`)
+      }
 
     let jobObject = customerInstance.customerLocations[0].jobs[0]
     let instanceObject = customerInstance.customerLocations[0].jobs[0].jobInstances[0]
@@ -82,7 +72,7 @@ export const JobInstanceDetails = () => {
     let scheduledDate = Moment(instanceObject.scheduleDate).format(`MM-DD-YYYY`)
     let completedDate = Moment(instanceObject.completedDate).format(`MM-DD-YYYY`)
     let userCompleted = customerInstance.customerLocations[0].jobs[0].jobInstances[0].user.fullName
-
+    
     return (
         <>
 
@@ -105,22 +95,40 @@ export const JobInstanceDetails = () => {
                     <div>{customerInstance.phoneNumber}</div>
                     <div>{customerInstance.email}</div>
                 </div>
-                <br/>
+                <br />
                 <div className="propertyInformation">
                     <h6>{customerInstance.customerLocations[0].name}</h6>
                     <div>{customerInstance.customerLocations[0].fullAddress}</div>
                 </div>
-                <br/>
+                <br />
                 <div className="jobInformation">
                     <h6>Job Information</h6>
                     <div>{jobObject.name}</div>
                     <div>{jobObject.details}</div>
                 </div>
-                <br/>
+                <br />
                 <div className="instanceStatus">
                     <h6>Status</h6>
                     {instanceObject.scheduleDate && !instanceObject.completedDate ? <div>Scheduled for: {scheduledDate}</div> : instanceObject.scheduleDate && instanceObject.completedDate ? <div>Completed on {completedDate}<div>Completed By {userCompleted}</div></div> : <div>Unscheduled</div>}
-                    
+                </div>
+                <br />
+                <div className="serviceEmployees">
+                    <h6>Employees</h6>
+
+                    <div className="checkList">
+                        
+                        <div className="list-container">
+                            {users.map((user, index) => (
+                                <div key={index}>
+                                    {/* map throguh users then look to see which userJobInstances have userid. Then it defaults those as checked */}
+                                    <><input value={user.id} type="checkbox" checked={userJobInstances.some(uj => uj.userId === user.id) ? "true" : ""} onClick={handleEmployeeScheduleChange}/>
+                                    <span>{user.fullName}</span>
+                                    </>
+                                    
+                                </div>
+                            ))}
+                        </div>
+                    </div>
 
                 </div>
 
