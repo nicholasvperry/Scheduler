@@ -39,9 +39,9 @@ namespace Scheduler.Controllers
         [HttpPost]
         public IActionResult Post(JobInstance jobInstance)
         {
-            _jobInstanceRepository.Add(jobInstance);
             jobInstance.CompletedUserId = null;
             jobInstance.CompletedDate = null;
+            _jobInstanceRepository.Add(jobInstance);
             return CreatedAtAction("Get", new { id = jobInstance.Id }, jobInstance);
         }
 

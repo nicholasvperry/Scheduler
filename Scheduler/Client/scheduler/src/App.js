@@ -8,6 +8,7 @@ import { SideBar } from './components/SideBar/SideBar';
 import { useContext } from 'react';
 import { JobProvider } from './Providers/JobProvider';
 import { JobInstanceProvider } from './Providers/JobInstanceProvider';
+import { UserJobInstanceProvider } from './Providers/UserJobInstanceProvider';
 
 
 function App() {
@@ -30,15 +31,17 @@ function App() {
             <UserProvider>
               <JobProvider>
                 <JobInstanceProvider>
-                  <div className='header'>
-                    <Header />
-                  </div>
-                  <div className='allViews'>
-                    <SideBar />
-                    <div className='applicationViews'>
-                      <ApplicationViews />
+                  <UserJobInstanceProvider>
+                    <div className='header'>
+                      <Header />
                     </div>
-                  </div>
+                    <div className='allViews'>
+                      <SideBar />
+                      <div className='applicationViews'>
+                        <ApplicationViews />
+                      </div>
+                    </div>
+                  </UserJobInstanceProvider>
                 </JobInstanceProvider>
               </JobProvider>
             </UserProvider>

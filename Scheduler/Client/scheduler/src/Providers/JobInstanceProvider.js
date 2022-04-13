@@ -6,6 +6,7 @@ export const JobInstanceContext = createContext();
 export function JobInstanceProvider(props) {
   //user state holds list of users from API
   const [jobInstances, setJobInstances] = useState([])
+  const [jobInstancesById, setJobInstancesById] = useState([])
   const apiUrl = "https://localhost:44320";
 
   const getAllJobInstances = () => {
@@ -14,9 +15,10 @@ export function JobInstanceProvider(props) {
       .then(setJobInstances)
   }
 
-  const getInstancesByJobId = (id) => {
+  const getJobInstancesByJobId = (id) => {
     return fetch(`${apiUrl}/api/jobInstance/${id}`)
       .then((res) => res.json())
+      .then(setJobInstancesById)
   }
   const updateInstance = instance => {
     return fetch(`https://localhost:44360/api/User/${instance.id}`, {
@@ -38,7 +40,7 @@ export function JobInstanceProvider(props) {
 }
 
   return (
-    <JobInstanceContext.Provider value={{ getAllJobInstances, jobInstances, getInstancesByJobId, updateInstance, addInstance }}>
+    <JobInstanceContext.Provider value={{ getAllJobInstances, jobInstances, getJobInstancesByJobId, updateInstance, addInstance, jobInstancesById }}>
       {props.children}
     </JobInstanceContext.Provider>
   );

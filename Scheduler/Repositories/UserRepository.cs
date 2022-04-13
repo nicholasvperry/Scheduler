@@ -233,7 +233,54 @@ namespace Scheduler.Repositories
             }
         }
 
-        public void UpdateUser(User user)
+        //not finished. Just added sql query
+        public User GetByJobInstanceId(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                       SELECT u.Id, u.FirstName, u.LastName, u.Email, u.UserTypeId,
+                               ut.Name AS UserTypeName,
+                               uj.id AS UJIId,
+                               ji.Id AS JobInstanceId, ji.CompletedDate, ji.Price, ji.CurrentRouteOrderNumber, ji.ScheduleDate, ji.IsPaid, ji.CompletedUserId
+                          FROM [User] u
+                               LEFT JOIN UserType ut on u.UserTypeId = ut.Id
+                               LEFT JOIN UserJobInstance uj on u.id = uj.UserId
+                               LeFT JOIN JobInstance ji on uj.Id = uj.Id
+                               WHERE ji.Id =  @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        User user = new User()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            FirstName = DbUtils.GetString(reader, "FirstName"),
+                            LastName = DbUtils.GetString(reader, "LastName"),
+                            Email = DbUtils.GetString(reader, "Email"),
+                            UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
+                            UserType = new UserType()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserTypeId"),
+                                Name = DbUtils.GetString(reader, "UserTypeName"),
+                            }
+                        };
+                        reader.Close();
+                        return user;
+                    }
+                    reader.Close();
+                    return null;
+
+                }
+            }
+        }
+
+            public void UpdateUser(User user)
         {
             using (var conn = Connection)
             {

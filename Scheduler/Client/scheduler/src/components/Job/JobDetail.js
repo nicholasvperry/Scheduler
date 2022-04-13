@@ -14,7 +14,7 @@ import {motion} from "framer-motion"
 
 export const JobDetails = () => {
     const { getJobById } = useContext(JobContext);
-    const { getInstancesByJobId, addInstance } = useContext(JobInstanceContext);
+    const { getJobInstancesByJobId, addInstance, jobInstancesById } = useContext(JobInstanceContext);
     const { id } = useParams();
     const [job, setJob] = useState()
     const [jobInstances, setJobInstances] = useState()
@@ -35,8 +35,8 @@ export const JobDetails = () => {
     }, [refreshProps]);
 
     useEffect(() => {
-        getInstancesByJobId(id)
-            .then(setJobInstances)
+        getJobInstancesByJobId(id)
+            
 
     }, [refreshProps]);
 
@@ -45,9 +45,7 @@ export const JobDetails = () => {
         return null;
     }
 
-    if (!jobInstances) {
-        return null;
-    }
+   
     
     //get main route order number to add to new job instance
     const routeOrderNumber = job.routeOrderNumber
@@ -68,7 +66,7 @@ export const JobDetails = () => {
                 <Button
                     className="jobDetailsButton backButton"
                     variant="secondary"
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate(`/customer/${job.customerLocation.customer.id}`)}
                 >Back To Locations</Button>
 
                 <br />
@@ -101,7 +99,7 @@ export const JobDetails = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {jobInstances.map((jobInstance) => {
+                                {jobInstancesById.map((jobInstance) => {
                                     //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
                                     if (jobInstance.scheduleDate == null) {
 
@@ -137,7 +135,7 @@ export const JobDetails = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {jobInstances.map((jobInstance) => {
+                                {jobInstancesById.map((jobInstance) => {
                                     //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
                                     if (jobInstance.scheduleDate !== null && !jobInstance.completedDate) {
 
@@ -179,7 +177,7 @@ export const JobDetails = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {jobInstances.map((jobInstance) => {
+                                {jobInstancesById.map((jobInstance) => {
                                     //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
                                     if (jobInstance.completedDate) {
 

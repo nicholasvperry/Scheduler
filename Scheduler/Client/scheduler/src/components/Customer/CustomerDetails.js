@@ -44,7 +44,7 @@ export const CustomerDetails = () => {
                 <Button
                 className="customerDetailsButton backButton"
                 variant="secondary"
-                onClick={() => navigate(-1)}
+                onClick={() => navigate(`/customers`)}
                 >Back To Customers</Button>
                 <br />
 
