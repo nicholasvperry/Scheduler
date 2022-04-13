@@ -24,6 +24,7 @@ namespace Scheduler
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IJobInstanceRepository, JobInstanceRepository>();
+            services.AddTransient<IUserJobInstanceRepository, UserJobInstanceRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

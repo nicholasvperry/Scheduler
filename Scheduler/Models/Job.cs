@@ -15,7 +15,7 @@ namespace Scheduler.Models
         public int CustomerLocationId { get; set; }
         public int RouteOrderNumber { get; set; }
         public int JobStatusId { get; set; }
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
         public int BillingTypeId { get; set; }
         public CustomerLocation CustomerLocation { get; set; }
         public JobNote JobNote { get; set; }

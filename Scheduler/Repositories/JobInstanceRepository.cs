@@ -97,7 +97,7 @@ namespace Scheduler.Repositories
                                         OUTPUT INSERTED.ID
                                         VALUES (@JobId, @CompletedDate, @Price, 
                                                 @CurrentRouteOrderNumber, @ScheduleDate, @IsPaid, @CompletedUserId)";
-                    //DbUtils.AddParameter(cmd, "@FirebaseUserId", userProfile.FirebaseUserId);
+                    
                     DbUtils.AddParameter(cmd, "@JobId", jobInstance.JobId);
                     DbUtils.AddParameter(cmd, "@CompletedDate", jobInstance.CompletedDate);
                     DbUtils.AddParameter(cmd, "@Price", jobInstance.Price);
