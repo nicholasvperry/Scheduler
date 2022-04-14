@@ -9,7 +9,7 @@ export const SideBar = () => {
   const navigate = useNavigate()
   
   return (
-    <div className="sidebar">
+    <div lang='eng' className="sidebar">
       <ul className='sidebarList'>
         {SidebarData.map((val, key) => {
           return( <li

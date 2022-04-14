@@ -2,12 +2,14 @@
 .App{
     width: 100vw;
     height: 100vh;
+    background: #edf8fd;
 }
 
 .applicationViews {
     padding-top: 75px;
     width: 100%;
     padding-left: 50px;
+    overflow-y:auto;
 }
 
 body {
@@ -15,6 +17,10 @@ body {
     padding: 0;
 }
 
+/* .sticky {
+    position: sticky; top:0;
+    background-color: #87ddff; 
+} */
 .allViews{
     width: 100vw;
     height: 100vh;
@@ -56,6 +62,7 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 
 /* makes icon take 30% of row and centers icon in the 30$ */
 .row #icon {
@@ -102,10 +109,15 @@ body {
 }
 
 /* ------Location------ */
-.customerLocations {
-    
+.customerDetailsButton {
+    position: fixed;
+    top: 90px;
+    right: 500px;
 }
 
+.jobDetailsButtons{
+    
+}
 .locationCard {
     border: 1px solid black;
     width: 500px;
@@ -121,4 +133,14 @@ body {
 .jobCard:hover {
     cursor: pointer;
     background-color: rgb(229, 227, 227);
+}
+
+.userJobInstances {
+    list-style-type: none;
+    
+    
+}
+.instanceCard {
+    
+    
 }

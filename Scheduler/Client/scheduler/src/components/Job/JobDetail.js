@@ -8,7 +8,7 @@ import { JobInstanceContext } from "../../Providers/JobInstanceProvider";
 import JobInstance from "../JobInstance/JobInstance";
 import { ConstructionOutlined } from "@mui/icons-material";
 import { InstanceForm } from "../JobInstance/JobInstanceForm";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion"
 
 
 
@@ -36,7 +36,7 @@ export const JobDetails = () => {
 
     useEffect(() => {
         getJobInstancesByJobId(id)
-            
+
 
     }, [refreshProps]);
 
@@ -45,8 +45,8 @@ export const JobDetails = () => {
         return null;
     }
 
-   
-    
+
+
     //get main route order number to add to new job instance
     const routeOrderNumber = job.routeOrderNumber
 
@@ -55,30 +55,34 @@ export const JobDetails = () => {
     return (
         <>
             <div className="jobDetailCard">
-                <div className="jobName">
-                    <h1>Job Details</h1>
-                </div>
-                <Button
-                    className="addJob"
-                    variant="secondary"
-                    onClick={() => navigate(`/addservice/${id}`)}
-                >Add Service</Button>
-                <Button
-                    className="jobDetailsButton backButton"
-                    variant="secondary"
-                    onClick={() => navigate(`/customer/${job.customerLocation.customer.id}`)}
-                >Back To Locations</Button>
-
-                <br />
-                <div className="jobLocationCard">
-                    <h6>Client</h6>
-                    <div>{job.customerLocation.customer.fullName}</div>
-                    <div>{job.customerLocation.customer.phoneNumber}</div>
-                    <div>{job.customerLocation.customer.email}</div>
+                <div className="sticky">
+                    <div className="jobName">
+                        <h1>Job Details</h1>
+                    </div>
+                    <div className="jobDetailsButtons">
+                        <Button
+                            className="addJob"
+                            variant="secondary"
+                            onClick={() => navigate(`/addservice/${id}`)}
+                        >Add Service</Button>
+                        
+                        <Button
+                            className="jobDetailsButton backButton"
+                            variant="secondary"
+                            onClick={() => navigate(`/customer/${job.customerLocation.customer.id}`)}
+                        >Back To Locations</Button>
+                    </div>
                     <br />
-                    <h6>Address</h6>
-                    <div>{job.customerLocation.streetAddress}</div>
-                    <div>{job.customerLocation.city}, {job.customerLocation.state} {job.customerLocation.zip}</div>
+                    <div className="jobLocationCard">
+                        <h6>Client</h6>
+                        <div>{job.customerLocation.customer.fullName}</div>
+                        <div>{job.customerLocation.customer.phoneNumber}</div>
+                        <div>{job.customerLocation.customer.email}</div>
+                        <br />
+                        <h6>Address</h6>
+                        <div>{job.customerLocation.streetAddress}</div>
+                        <div>{job.customerLocation.city}, {job.customerLocation.state} {job.customerLocation.zip}</div>
+                    </div>
                 </div>
                 <br />
 

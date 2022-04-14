@@ -13,7 +13,7 @@ import { UserJobInstanceProvider } from './Providers/UserJobInstanceProvider';
 
 function App() {
   const { isLoggedIn } = useContext(UserContext);
-
+  
   if (!isLoggedIn) {
     return (
       <Router>

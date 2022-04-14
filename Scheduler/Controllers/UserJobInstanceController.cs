@@ -48,6 +48,32 @@ namespace Scheduler.Controllers
             return Ok(userJobInstance);
         }
 
+        // GET api/<UserJobInstanceController>/5
+        [HttpGet("getbyuseranddate/{id}/{date}")]
+        public IActionResult GetAllByUserAndDate(int id, DateTime date)
+        {
+            var userJobInstance = _userJobInstanceRepository.GetAllByUserAndDate(id, date);
+            if (userJobInstance == null)
+            {
+                return NotFound();
+            }
+            return Ok(userJobInstance);
+        }
+
+        // GET api/<UserJobInstanceController>/5
+        [HttpGet("getbyuser/{id}")]
+        public IActionResult GetAllByUser(int id)
+        {
+            var userJobInstance = _userJobInstanceRepository.GetAllByUser(id);
+            if (userJobInstance == null)
+            {
+                return NotFound();
+            }
+            return Ok(userJobInstance);
+        }
+
+
+
         // POST api/<UserJobInstanceController>
         [HttpPost]
         public IActionResult Post(UserJobInstance userJobInstance)

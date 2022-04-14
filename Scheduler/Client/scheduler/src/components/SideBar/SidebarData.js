@@ -4,6 +4,8 @@ import AgricultureIcon from '@mui/icons-material/Agriculture';
 import HomeIcon from '@mui/icons-material/Home';
 
 
+const user = JSON.parse(sessionStorage.getItem("userProfile"))
+
 export const SidebarData = [
     {
         title: "Scheduler",
@@ -20,7 +22,7 @@ export const SidebarData = [
     {
         title: "Schedule",
         icon: <AgricultureIcon />,
-        link: "/schedule"
+        link: `/schedule/${user.id}`
 
     },
 ]

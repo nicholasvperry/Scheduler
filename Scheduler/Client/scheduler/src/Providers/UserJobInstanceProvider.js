@@ -19,6 +19,12 @@ export function UserJobInstanceProvider(props) {
       .then((res) => res.json())
   }
 
+  const getInstancesByUserId = (id) => {
+    return fetch(`${apiUrl}/api/userjobInstance/getbyuser/${id}`)
+      .then((res) => res.json())
+      .then(setUserJobInstances)
+  }
+
   const getUserInstancesByJobInstanceId = (id) => {
     return fetch(`${apiUrl}/api/userjobInstance/getbyjobinstance/${id}`)
       .then((res) => res.json())
@@ -44,7 +50,7 @@ export function UserJobInstanceProvider(props) {
 }
 
   return (
-    <UserJobInstanceContext.Provider value={{ getAllUserJobInstances, userJobInstances, getInstancesByJobId, updateUserInstance, addUserInstance, getUserInstancesByJobInstanceId }}>
+    <UserJobInstanceContext.Provider value={{ getAllUserJobInstances, userJobInstances, getInstancesByJobId, updateUserInstance, addUserInstance, getUserInstancesByJobInstanceId, getInstancesByUserId }}>
       {props.children}
     </UserJobInstanceContext.Provider>
   );

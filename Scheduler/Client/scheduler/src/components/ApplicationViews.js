@@ -9,6 +9,7 @@ import { CustomerDetails } from "./Customer/CustomerDetails";
 import { JobDetails } from "./Job/JobDetail";
 import { JobInstanceDetails } from "./JobInstance/JobInstanceDetails";
 import { InstanceForm } from "./JobInstance/JobInstanceForm";
+import { ScheduleList } from "./Schedule/ScheduleList";
 
 
 export default function ApplicationViews() {
@@ -38,7 +39,7 @@ export default function ApplicationViews() {
         <Route path="/jobinstance/:id" element={<JobInstanceDetails />} />
 
 
-
+        <Route path="/schedule/:id" element={<ScheduleList />} />
         
       </Routes>
     );

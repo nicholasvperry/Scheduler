@@ -48,7 +48,7 @@ export const CustomerDetails = () => {
                 >Back To Customers</Button>
                 <br />
 
-                <h4>Locations</h4>
+                <h2>Locations</h2>
                 <div className="customerLocations">{customer.customerLocations.map((customer) => (
                     <CustomerLocation customerName={customer.fullName} locationObject={customer} key={customer.name} />
                 ))}</div>

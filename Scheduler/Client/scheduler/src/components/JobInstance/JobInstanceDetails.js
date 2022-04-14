@@ -62,9 +62,8 @@ export const JobInstanceDetails = () => {
 
 
     const handleEmployeeScheduleChange = () => {
-        debugger
-        alert(`you clicked me ${users.id}`)
-      }
+        
+    }
 
     let jobObject = customerInstance.customerLocations[0].jobs[0]
     let instanceObject = customerInstance.customerLocations[0].jobs[0].jobInstances[0]

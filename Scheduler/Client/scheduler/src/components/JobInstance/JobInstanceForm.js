@@ -151,7 +151,7 @@ export const InstanceForm = () => {
         var endDate = new Date(Moment(dates[0].endDate).format(`MM-DD-YYYY`))
         var numberOfDays = (endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)
         // alert(numberOfDays)
-
+        debugger
         //finds all days between dates. 0 = Sunday 1 = Monday
         var start = Moment(dates[0].startDate), // Sept. 1st
             end = Moment(dates[0].endDate), // Nov. 2nd
@@ -160,7 +160,7 @@ export const InstanceForm = () => {
         var result = [];
         var current = start.clone();
 
-        while (current.day(7 + day).isBefore(end)) {
+        while (current.day(7 + day).isSameOrBefore(end)) {
             result.push(current.clone());
         }
 
