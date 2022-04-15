@@ -15,7 +15,7 @@ import { UserJobInstanceContext } from "../../Providers/UserJobInstanceProvider"
 export const InstanceForm = () => {
     const { getJobById } = useContext(JobContext);
     const { getAllUsers, users } = useContext(UserContext)
-    const { addInstance, getJobInstancesByJobId, jobInstancesById } = useContext(JobInstanceContext)
+    const { addInstance, getJobInstancesByJobId} = useContext(JobInstanceContext)
     const { addUserInstance } = useContext(UserJobInstanceContext)
     const [refreshProps, setRefreshProps] = useState()
     const [job, setJob] = useState()
@@ -92,7 +92,7 @@ export const InstanceForm = () => {
     }
 
 
-
+    //sets state for adding multiple days
     const toggleChange = () => {
         if (recurring === true) {
             setRecurring(false)
@@ -102,9 +102,9 @@ export const InstanceForm = () => {
         }
     }
 
-
+    //add the instance and then add the userjobinstances
     const addSingleInstance = () => {
-
+        //add instance
         addInstance({
             jobId: id,
             completedDate: null,
@@ -113,13 +113,32 @@ export const InstanceForm = () => {
             scheduleDate: instance.singleDate,
             isPaid: false,
             completedUserId: null
-        }).then(() => navigate(`/job/${id}`))
-
+        }).then((instance) => {
+            //instance is the response from the add instance call
+            //map through the checkedemployees state and make an array with their id
+            const employeeArray = [employeeChecked.map(e => {
+                return new Promise(() => {
+                fetch(`https://localhost:44320/api/UserJobInstance`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        JobInstanceId: instance.id,
+                        UserId: e,
+                        TimeIn: null,
+                        TimeOut: null
+                    }),
+                })
+            })
+        })]
+        Promise.all(employeeArray)
+        .then(() => navigate(`/job/${id}`))})
     }
 
     const addEmployeesToSchedule = () => {
 
-        getJobInstancesByJobId(id).then(() => {
+        getJobInstancesByJobId(id).then((jobInstancesById) => {
             jobInstancesById.forEach((j) => {
                 
                 const employeesArray = [employeeChecked.map(employee => {
@@ -140,6 +159,7 @@ export const InstanceForm = () => {
                     })
                 })]
                 Promise.all(employeesArray)
+                .then(() => navigate(`/job/${id}`))
             })
         })
     }
@@ -151,10 +171,10 @@ export const InstanceForm = () => {
         var endDate = new Date(Moment(dates[0].endDate).format(`MM-DD-YYYY`))
         var numberOfDays = (endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)
         // alert(numberOfDays)
-        debugger
+        
         //finds all days between dates. 0 = Sunday 1 = Monday
-        var start = Moment(dates[0].startDate), // Sept. 1st
-            end = Moment(dates[0].endDate), // Nov. 2nd
+        var start = Moment(dates[0].startDate), // selected from calendar
+            end = Moment(dates[0].endDate), // selected in calendar
             day = parseInt(selectedDays); //this is the value coming from state
 
         var result = [];
@@ -194,23 +214,11 @@ export const InstanceForm = () => {
         })]
         //run promise.all with array of fetch calls created
         //get by id then loop through and add employees to each instance
+        //debugger
         Promise.all(resultsArray)
             .then(() => {
                 addEmployeesToSchedule()
             })
-        // .then(() => {
-        //     return fetch(`https://localhost:44320/api/jobInstance/${id}`)
-        // }).then((response) => {
-        //     debugger
-        //     return response.json()
-        // }).then((data) => {
-        //     debugger
-        //     data.map(instance => {
-
-        //     })
-
-
-        // })
     }
 
 

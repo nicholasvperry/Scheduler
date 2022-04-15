@@ -46,7 +46,7 @@ export const ScheduleList = () => {
         setJobOrder(items)
     }
     
-    debugger
+    
     return (
         <>
 

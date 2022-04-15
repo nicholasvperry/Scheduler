@@ -6,13 +6,11 @@ import { JobContext } from "../../Providers/JobProvider";
 import Button from 'react-bootstrap/Button';
 import { JobInstanceContext } from "../../Providers/JobInstanceProvider";
 import JobInstance from "../JobInstance/JobInstance";
-import { ConstructionOutlined } from "@mui/icons-material";
-import { InstanceForm } from "../JobInstance/JobInstanceForm";
-import { motion } from "framer-motion"
 
 
 
-export const JobDetails = () => {
+
+export const ScheduleJobDetails = () => {
     const { getJobById } = useContext(JobContext);
     const { getJobDetailInstancesByJobId, addInstance, jobInstancesById } = useContext(JobInstanceContext);
     const { id } = useParams();
@@ -59,18 +57,12 @@ export const JobDetails = () => {
                     <div className="jobName">
                         <h1>Job Details</h1>
                     </div>
-                    <div className="jobDetailsButtons">
-                        <Button
-                            className="addJob"
-                            variant="secondary"
-                            onClick={() => navigate(`/addservice/${id}`)}
-                        >Add Service</Button>
-                        
+                    <div>
                         <Button
                             className="jobDetailsButton backButton"
                             variant="secondary"
-                            onClick={() => navigate(`/customer/${job.customerLocation.customer.id}`)}
-                        >Back To Locations</Button>
+                            onClick={navigate(-1)}
+                        >Back To Schedule</Button>
                     </div>
                     <br />
                     <div className="jobLocationCard">

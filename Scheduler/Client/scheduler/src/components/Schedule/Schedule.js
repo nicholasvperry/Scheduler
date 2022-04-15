@@ -2,6 +2,8 @@
 import React, { useEffect } from "react"
 import Swal from "sweetalert2"
 import { useState } from "react/cjs/react.development"
+import { Button } from 'react-bootstrap'
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -10,13 +12,17 @@ export const Schedule = (props) => {
     const customerProp = props.instanceObject.job.customerLocation.customer
     const LocationProp = props.instanceObject.job.customerLocation
     const jobInstanceProp = props.jobInstance
-
-
+    const navigate = useNavigate()
+    const handleJobClick = () => {
+        navigate(`/scheduledetails/${props.instanceObject.job.id}`)
+    }
+    //add onclick to div after class name. Need to fix the schedule job detail
     
     return (
         <>
             
-            <div className="scheduleCard">
+            
+            <div className="scheduleCard" >
                 <h6>{customerProp.fullName}</h6>
                 <div>
                     {LocationProp.streetAddress}<br />
