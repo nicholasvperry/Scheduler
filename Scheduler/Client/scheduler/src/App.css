@@ -9,7 +9,8 @@
     padding-top: 75px;
     width: 100%;
     padding-left: 50px;
-    overflow-y:auto;
+    height: 100%;
+    
 }
 
 body {
@@ -103,6 +104,31 @@ body {
 }
 
 /* -------Customer Table-------- */
+.center {
+    display: flex;
+    justify-content: center;
+}
+.customerList{
+    border: 1px solid black;
+    width: 600px;
+}
+
+.customerHeader {
+    text-align: center;
+}
+
+.customerSearch {
+    text-align: center;
+}
+
+.tableHead {
+    background: #a0e2fd;
+
+}
+
+.customerList tr:nth-child(even) {
+    background-color: #a0e2fd;
+}
 .tableRow:hover {
     cursor: pointer;
     background-color: rgb(229, 227, 227);
@@ -115,9 +141,6 @@ body {
     right: 100px;
 }
 
-.jobDetailsButtons{
-    
-}
 .locationCard {
     border: 1px solid black;
     width: 500px;
@@ -137,10 +160,119 @@ body {
 
 .userJobInstances {
     list-style-type: none;
-    
+}
+
+.jobDetailCard {
+    border: 1px solid black;
+    width: 1400px;
+    padding-left: 20px;
+    padding-right: 20px;
     
 }
-.instanceCard {
+
+.unscheduledInstances {
+    text-align: center;
+    border: 1px dashed black;
+    border-radius: 50px;
+    width: 700px;
+    height: 200px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+
+.scheduledServices {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.upcomingInstances {
+    text-align: center;
+    border: 1px dashed black;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    width: 600px;
+    height: 400px;
+    overflow: hidden;
+    overflow-y: auto;    
+
+}
+
+
+.completedInstances {
+    text-align: center;
+    border: 1px dashed black;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    width: 700px;
+    height: 400px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.jobInstanceDetailCard {
+    border: 1px solid black;
+    width: 500px;
+    padding-left: 20px;
+    padding-right: 20px;
     
+}
+
+.jobLocationCard {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stickyHeader {
+    position: sticky;
+    top: 0rem;
+    background-color: #edf8fd;    
+    z-index: 9999;
+}
+
+thead {
+    position: sticky;
+    top: 2.1rem;
+    background-color: #edf8fd;    
+    z-index: 9998;
+}
+
+/* hide scroll bars */
+.unscheduledInstances::-webkit-scrollbar {
+    display: none;
+}
+
+.completedInstances::-webkit-scrollbar {
+    display: none;
+}
+
+.upcomingInstances::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* ---------Backdrop------ */
+.backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
     
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.locationForm {
+    width: clamp(50%, 700px, 90%);
+    height: min(50%, 300px);
+
+    margin: auto;
+    padding: 0 2rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

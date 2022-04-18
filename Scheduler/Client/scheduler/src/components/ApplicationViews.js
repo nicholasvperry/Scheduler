@@ -11,6 +11,7 @@ import { JobInstanceDetails } from "./JobInstance/JobInstanceDetails";
 import { InstanceForm } from "./JobInstance/JobInstanceForm";
 import { ScheduleList } from "./Schedule/ScheduleList";
 import { ScheduleJobDetails } from "./Schedule/ScheduleJobDetails";
+import { CustomerSearch } from "./Customer/CustomerSearch";
 
 
 export default function ApplicationViews() {

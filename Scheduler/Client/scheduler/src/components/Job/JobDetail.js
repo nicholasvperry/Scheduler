@@ -65,7 +65,7 @@ export const JobDetails = () => {
                             variant="secondary"
                             onClick={() => navigate(`/addservice/${id}`)}
                         >Add Service</Button>
-                        
+
                         <Button
                             className="jobDetailsButton backButton"
                             variant="secondary"
@@ -74,127 +74,133 @@ export const JobDetails = () => {
                     </div>
                     <br />
                     <div className="jobLocationCard">
-                        <h6>Client</h6>
-                        <div>{job.customerLocation.customer.fullName}</div>
-                        <div>{job.customerLocation.customer.phoneNumber}</div>
-                        <div>{job.customerLocation.customer.email}</div>
-                        <br />
-                        <h6>Address</h6>
-                        <div>{job.customerLocation.streetAddress}</div>
-                        <div>{job.customerLocation.city}, {job.customerLocation.state} {job.customerLocation.zip}</div>
+                        <div>
+                            <h6>Customer</h6>
+                            <div>{job.customerLocation.customer.fullName}</div>
+                            <div>{job.customerLocation.customer.phoneNumber}</div>
+                            <div>{job.customerLocation.customer.email}</div>
+                        </div>
+                        <div>
+                            <h6>Address</h6>
+                            <div>{job.customerLocation.streetAddress}</div>
+                            <div>{job.customerLocation.city}, {job.customerLocation.state} {job.customerLocation.zip}</div>
+                        </div>
+
+                        <div className="unscheduledInstances">
+                            <h3 className="stickyHeader">Unscheduled Services</h3>
+                            <div className="unscheduledJobCards">
+                                <table cellPadding={15} cellSpacing={0} className="customerTable">
+                                    <thead>
+                                        <tr className="tableRowName">
+                                            <th className="icon"></th>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Details
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {jobInstancesById.map((jobInstance) => {
+                                            //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
+                                            if (jobInstance.scheduleDate == null) {
+
+                                                return (
+                                                    <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} />
+
+                                                )
+                                            }
+
+                                        })}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <br />
 
-                <div className="unscheduledInstances">
-                    <h6>Unscheduled Services</h6>
-                    <div className="unscheduledJobCards">
-                        <table cellPadding={15} cellSpacing={0} className="customerTable">
-                            <thead>
-                                <tr className="tableRowName">
-                                    <th className="icon"></th>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Details
-                                    </th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {jobInstancesById.map((jobInstance) => {
-                                    //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
-                                    if (jobInstance.scheduleDate == null) {
+                <div className="scheduledServices">
+                    <div className="upcomingInstances">
+                        <h3 className="stickyHeader">Upcoming Services</h3>
+                        <div className="upcomingJobCards">
+                            <table cellPadding={15} cellSpacing={0} className="customerTable">
+                                <thead>
+                                    <tr className="tableRowName">
+                                        <th className="icon"></th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Details
+                                        </th>
+                                        <th>
+                                            Scheduled Date
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {jobInstancesById.map((jobInstance) => {
+                                        //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
+                                        if (jobInstance.scheduleDate !== null && !jobInstance.completedDate) {
 
-                                        return (
-                                            <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} />
+                                            return (
+                                                <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} />
 
-                                        )
-                                    }
+                                            )
+                                        }
 
-                                })}
+                                    })}
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
 
-                <div className="upcomingInstances">
-                    <h6>Upcoming Services</h6>
-                    <div className="upcomingJobCards">
-                        <table cellPadding={15} cellSpacing={0} className="customerTable">
-                            <thead>
-                                <tr className="tableRowName">
-                                    <th className="icon"></th>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Details
-                                    </th>
-                                    <th>
-                                        Scheduled Date
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {jobInstancesById.map((jobInstance) => {
-                                    //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
-                                    if (jobInstance.scheduleDate !== null && !jobInstance.completedDate) {
+                    <div className="completedInstances">
+                        <h3 className="stickyHeader">Completed Services</h3>
+                        <div className="completedJobCards">
+                            <table cellPadding={15} cellSpacing={0} className="customerTable">
+                                <thead>
+                                    <tr className="tableRowName">
+                                        <th className="icon"></th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Details
+                                        </th>
+                                        <th>
+                                            Scheduled Date
+                                        </th>
+                                        <th>
+                                            Completed Date
+                                        </th>
+                                        <th>
+                                            Completed By
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {jobInstancesById.map((jobInstance) => {
+                                        //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
+                                        if (jobInstance.completedDate) {
 
-                                        return (
-                                            <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} />
+                                            return (
+                                                <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} />
 
-                                        )
-                                    }
+                                            )
+                                        }
 
-                                })}
+                                    })}
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div className="completedInstances">
-                    <h6>Completed Services</h6>
-                    <div className="completedJobCards">
-                        <table cellPadding={15} cellSpacing={0} className="customerTable">
-                            <thead>
-                                <tr className="tableRowName">
-                                    <th className="icon"></th>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Details
-                                    </th>
-                                    <th>
-                                        Scheduled Date
-                                    </th>
-                                    <th>
-                                        Completed Date
-                                    </th>
-                                    <th>
-                                        Completed By
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {jobInstancesById.map((jobInstance) => {
-                                    //return jobInstance.scheduleDate !== null ?  <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} /> :<></>
-                                    if (jobInstance.completedDate) {
-
-                                        return (
-                                            <JobInstance jobObject={job} jobInstanceObject={jobInstance} key={jobInstance.id} />
-
-                                        )
-                                    }
-
-                                })}
-
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 

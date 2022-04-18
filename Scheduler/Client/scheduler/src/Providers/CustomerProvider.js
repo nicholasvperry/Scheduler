@@ -7,6 +7,8 @@ export function CustomerProvider(props) {
   //user state holds list of users from API
   const [customers, setCustomers] = useState([])
   const apiUrl = "https://localhost:44320";
+  //make state for search
+  const [ customerSearchTerms, setCustomerSearchTerms ] = useState("")
 
   const getAllCustomers = () => {
     return fetch(`${apiUrl}/api/customer`)
@@ -35,7 +37,7 @@ export function CustomerProvider(props) {
   }
 
   return (
-    <CustomerContext.Provider value={{ getAllCustomers, getCustomerByIdWithJobInformation, updateCustomer, customers, setCustomers, GetCustomerByInstanceIdWithJobInformation }}>
+    <CustomerContext.Provider value={{ getAllCustomers, getCustomerByIdWithJobInformation, updateCustomer, customers, setCustomers, GetCustomerByInstanceIdWithJobInformation, customerSearchTerms, setCustomerSearchTerms }}>
       {props.children}
     </CustomerContext.Provider>
   );
