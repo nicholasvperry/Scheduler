@@ -40,24 +40,27 @@ export const CustomerDetails = () => {
     return (
         <>
             <div className="customerDetailCard">
-                <div className="customerName">
-                    <h1>{customer.fullName}</h1>
-                </div>
-                <Button
-                    className="customerDetailsButton backButton"
-                    variant="secondary"
-                    onClick={() => navigate(`/customers`)}
-                >Back To Customers</Button>
-                <br />
+                <div className="customerDetailHeader">
+                    <div className="customerName">
+                        <h1>{customer.fullName}</h1>
+                    </div>
+                    <Button
+                        className="customerDetailsButton backButton"
+                        variant="secondary"
+                        onClick={() => navigate(`/customers`)}
+                    >Back To Customers</Button>
+                    <br />
 
-                <h2>Locations</h2>
-                <Button
-                    className="addLocationButton"
-                    variant="secondary"
-                    onClick={() => (locationFormModalOpen ? locationClose() : locationOpen())}
-                >
-                    Add Location
-                </Button>
+                    <h2>Locations</h2>
+                    <Button
+                        className="addLocationButton"
+                        variant="secondary"
+                        onClick={() => (locationFormModalOpen ? locationClose() : locationOpen())}
+                    >
+                        Add Location
+                    </Button>
+
+                </div>
 
                 <div className="customerLocations">{customer.customerLocations.map((customer) => (
                     <CustomerLocation customerName={customer.fullName} locationObject={customer} key={customer.name} />
@@ -73,7 +76,7 @@ export const CustomerDetails = () => {
                 //Fires whel all exiting nodes have completed animating out
 
                 >
-                    {locationFormModalOpen && <LocationForm locationFormModalOpen={locationFormModalOpen} handleClose={locationClose} />}
+                    {locationFormModalOpen && <LocationForm locationFormModalOpen={locationFormModalOpen} handleClose={locationClose} refreshProps={setRefreshProps} customerId={id} />}
 
                 </AnimatePresence>
 

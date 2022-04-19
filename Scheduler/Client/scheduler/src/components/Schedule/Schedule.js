@@ -11,26 +11,32 @@ import { useNavigate } from "react-router-dom"
 export const Schedule = (props) => {
     const customerProp = props.instanceObject.job.customerLocation.customer
     const LocationProp = props.instanceObject.job.customerLocation
-    const jobInstanceProp = props.jobInstance
+    const jobInstanceProp = props.instanceObject.jobInstance
+    const jobProp = props.instanceObject.job
     const navigate = useNavigate()
     const handleJobClick = () => {
         navigate(`/scheduledetails/${props.instanceObject.job.id}`)
     }
     //add onclick to div after class name. Need to fix the schedule job detail
-    
+
     return (
-        <>
-            
-            
-            <div className="scheduleCard" >
-                <h6>{customerProp.fullName}</h6>
-                <div>
-                    {LocationProp.streetAddress}<br />
-                    {LocationProp.city} , {LocationProp.state} {LocationProp.zip} <br />
-                    {props.instanceObject.job.name}<br />
-                    {props.instanceObject.job.details}
-                </div>
-            </div>
+        <> 
+            <td onClick={handleJobClick}>
+                {customerProp.fullName}
+            </td>
+            <td onClick={handleJobClick}>
+                {LocationProp.streetAddress},
+                {LocationProp.city} , {LocationProp.state} {LocationProp.zip}
+            </td>
+            <td onClick={handleJobClick}>
+                {customerProp.phoneNumber}
+            </td>
+            <td onClick={handleJobClick}>
+                {jobProp.name}
+            </td>
+            <td onClick={handleJobClick}>
+                {jobProp.details}
+            </td>
         </>
 
     )

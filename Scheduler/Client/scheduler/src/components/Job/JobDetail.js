@@ -1,15 +1,10 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
 import { JobContext } from "../../Providers/JobProvider";
 import Button from 'react-bootstrap/Button';
 import { JobInstanceContext } from "../../Providers/JobInstanceProvider";
 import JobInstance from "../JobInstance/JobInstance";
-import { ConstructionOutlined } from "@mui/icons-material";
-import { InstanceForm } from "../JobInstance/JobInstanceForm";
-import { motion } from "framer-motion"
-
 
 
 export const JobDetails = () => {
@@ -65,7 +60,7 @@ export const JobDetails = () => {
                             variant="secondary"
                             onClick={() => navigate(`/addservice/${id}`)}
                         >Add Service</Button>
-
+                        &nbsp;&nbsp;
                         <Button
                             className="jobDetailsButton backButton"
                             variant="secondary"
@@ -90,7 +85,7 @@ export const JobDetails = () => {
                             <h3 className="stickyHeader">Unscheduled Services</h3>
                             <div className="unscheduledJobCards">
                                 <table cellPadding={15} cellSpacing={0} className="customerTable">
-                                    <thead>
+                                    <thead className="tableHead">
                                         <tr className="tableRowName">
                                             <th className="icon"></th>
                                             <th>
@@ -126,21 +121,24 @@ export const JobDetails = () => {
 
                 <div className="scheduledServices">
                     <div className="upcomingInstances">
-                        <h3 className="stickyHeader">Upcoming Services</h3>
+                        <div></div>
+                        <h3 className="stickyHeader scheduledHeader">Upcoming Services</h3>
                         <div className="upcomingJobCards">
                             <table cellPadding={15} cellSpacing={0} className="customerTable">
-                                <thead>
+                                <thead className="tableHead">
                                     <tr className="tableRowName">
                                         <th className="icon"></th>
+
+                                        <th>
+                                            Date
+                                        </th>
                                         <th>
                                             Name
                                         </th>
                                         <th>
                                             Details
                                         </th>
-                                        <th>
-                                            Scheduled Date
-                                        </th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -162,10 +160,12 @@ export const JobDetails = () => {
                     </div>
 
                     <div className="completedInstances">
+                        <div className="tableHeader">
                         <h3 className="stickyHeader">Completed Services</h3>
                         <div className="completedJobCards">
-                            <table cellPadding={15} cellSpacing={0} className="customerTable">
-                                <thead>
+                        </div>
+                            <table cellPadding={15} cellSpacing={0} className="completedCustomerTable">
+                                <thead className="tableHead">
                                     <tr className="tableRowName">
                                         <th className="icon"></th>
                                         <th>

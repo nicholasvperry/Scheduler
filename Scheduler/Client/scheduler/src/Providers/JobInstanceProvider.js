@@ -37,13 +37,13 @@ export function JobInstanceProvider(props) {
   }
   const addInstance = (instance) => {
     return fetch(`${apiUrl}/api/JobInstance`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(instance),
-  }).then((res) => res.json())
-}
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(instance),
+    }).then((res) => res.json())
+  }
 
   return (
     <JobInstanceContext.Provider value={{ getAllJobInstances, jobInstances, getJobInstancesByJobId, updateInstance, addInstance, jobInstancesById, getJobDetailInstancesByJobId }}>

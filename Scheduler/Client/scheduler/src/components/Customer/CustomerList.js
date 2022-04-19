@@ -42,12 +42,14 @@ const CustomerList = () => {
     <>
       <div className="center">
         <div className="customerList" centered>
-          <h1 className="customerHeader">Customers</h1>
-          <CustomerSearch className="customerSearch" />
+          <div className="stickyHeader">
+            <h1 className="customerHeader">Customers</h1>
+            <CustomerSearch className="customerSearch" />
+          </div>
           <br /><br />
           <div className="customerTable">
-            <table cellPadding={15} cellSpacing={0} className="customerTable">
-              <thead className="tableHead">
+            <table cellPadding={15} cellSpacing={0} className="customerNameTable">
+              <thead className="customerTableHead">
                 <tr >
                   <th className="icon"></th>
                   <th >

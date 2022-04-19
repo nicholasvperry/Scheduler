@@ -336,8 +336,9 @@ export const InstanceForm = () => {
 
                 }
 
-                <button className="btn btn-primary" onClick={() => {
-                    navigate(`/job/${id}`)
+                <button className="btn btn-primary" onClick={(e) => {
+                    e.preventDefault()
+                    navigate(-1)
                 }}>Cancel</button>
             </form>
 

@@ -9,11 +9,12 @@ import { useContext } from 'react';
 import { JobProvider } from './Providers/JobProvider';
 import { JobInstanceProvider } from './Providers/JobInstanceProvider';
 import { UserJobInstanceProvider } from './Providers/UserJobInstanceProvider';
+import { LocationProvider } from './Providers/LocationProvider';
 
 
 function App() {
   const { isLoggedIn } = useContext(UserContext);
-  
+
   if (!isLoggedIn) {
     return (
       <Router>
@@ -32,15 +33,17 @@ function App() {
               <JobProvider>
                 <JobInstanceProvider>
                   <UserJobInstanceProvider>
-                    <div className='header'>
-                      <Header />
-                    </div>
-                    <div className='allViews'>
-                      <SideBar />
-                      <div className='applicationViews'>
-                        <ApplicationViews />
+                    <LocationProvider>
+                      <div className='header'>
+                        <Header />
                       </div>
-                    </div>
+                      <div className='allViews'>
+                        <SideBar />
+                        <div className='applicationViews'>
+                          <ApplicationViews />
+                        </div>
+                      </div>
+                    </LocationProvider>
                   </UserJobInstanceProvider>
                 </JobInstanceProvider>
               </JobProvider>

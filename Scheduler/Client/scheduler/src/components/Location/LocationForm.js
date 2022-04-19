@@ -4,10 +4,13 @@ import Swal from 'sweetalert2';
 import { CustomerBackdrop } from "../Customer/CustomerModalBackdrop";
 import { motion } from "framer-motion";
 import Button from 'react-bootstrap/Button';
+import { LocationContext } from "../../Providers/LocationProvider";
 
 
 //make sure to wrap handleClose {}
-export const LocationForm = ({ handleClose }) => {
+export const LocationForm = ({ handleClose, refreshProps, customerId }) => {
+
+    const { addLocation } = useContext(LocationContext)
 
     //Modal Animation
     const dropIn = {
@@ -26,7 +29,7 @@ export const LocationForm = ({ handleClose }) => {
             }
         },
         exit: {
-            y: "100%",
+            y: "90%",
             opacity: 0,
 
         }
@@ -46,6 +49,19 @@ export const LocationForm = ({ handleClose }) => {
 
     }
 
+    const handleAddLocation = () => {
+        alert(customerId)
+        addLocation({
+            name: location.name,
+            customerId: customerId,
+            streetAddress: location.streetAddress,
+            city: location.city,
+            state: location.state,
+            zip: location.zip
+        })
+            .then(refreshProps)
+    }
+
     return (
 
         <>
@@ -59,7 +75,7 @@ export const LocationForm = ({ handleClose }) => {
                     exit="exit"
                 >
 
-                    <form>
+                    <form className="locationFormBorder">
                         <h2>Location</h2>
 
                         <div>
@@ -91,7 +107,7 @@ export const LocationForm = ({ handleClose }) => {
 
                         <div>
                             <div className="state">
-                                <label htmlFor="state">state: </label>
+                                <label htmlFor="state">State: </label>
                                 <select name="state" required onChange={handleControlledInputChange}>
                                     <option>Select State</option>
                                     <option value="AL">Alabama</option>
@@ -158,11 +174,20 @@ export const LocationForm = ({ handleClose }) => {
                             </div>
                         </div>
 
-
-                        <button onClick={e => {
-                            e.preventDefault()
-                            handleClose()
-                        }}>Cancel</button>
+                        <Button
+                            variant="secondary"
+                            onClick={e => {
+                                e.preventDefault()
+                                handleAddLocation()
+                                handleClose()
+                            }}>Add Location</Button>
+                        &nbsp; &nbsp;
+                        <Button
+                            variant="secondary"
+                            onClick={e => {
+                                e.preventDefault()
+                                handleClose()
+                            }}>Cancel</Button>
 
                     </form>
                 </motion.div>

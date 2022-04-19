@@ -1,4 +1,4 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, CardBody } from "reactstrap";
 import Swal from "sweetalert2";
@@ -45,29 +45,32 @@ const JobInstance = ({ jobObject, jobInstanceObject }) => {
 
     return (
         <>
-        <tr 
-        key={jobObject.id} 
-        onClick={() => handleClickRow()}
-        className="customerRow tableRow"
-        >
-              <td>
-                
-              </td>
-              <td>
-                <PersonSearchIcon /> {jobObject.name}
-              </td>
-              <td>
-                {jobObject.details}
-              </td>
-              {jobInstanceObject.scheduleDate ? <td>
-                {scheduledDate}
-              </td> : ""}
-              
-              {jobInstanceObject.completedDate ? <td>
-              {completedDate}
-              </td> : ""}
-              {jobInstanceObject.user.fullName ? <td>{jobInstanceObject.user.fullName}</td> : ""}
-              
+            <tr
+                key={jobObject.id}
+                onClick={() => handleClickRow()}
+                className="customerRow tableRow"
+            >
+                <td>
+
+                </td>
+
+                {jobInstanceObject.scheduleDate ? <td>
+                    {scheduledDate}
+                </td> : ""}
+
+                <td>
+                    <PersonSearchIcon /> {jobObject.name}
+                </td>
+                <td>
+                    {jobObject.details}
+                </td>
+
+
+                {jobInstanceObject.completedDate ? <td>
+                    {completedDate}
+                </td> : ""}
+                {jobInstanceObject.user.fullName ? <td>{jobInstanceObject.user.fullName}</td> : ""}
+
             </tr>
         </>
     );
