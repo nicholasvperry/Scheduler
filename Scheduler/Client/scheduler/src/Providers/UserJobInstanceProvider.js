@@ -29,7 +29,7 @@ export function UserJobInstanceProvider(props) {
     return fetch(`${apiUrl}/api/userjobInstance/getbyjobinstance/${id}`)
       .then((res) => res.json())
   }
-  
+
   const updateUserInstance = instance => {
     return fetch(`${apiUrl}api/UserJobInstance/${instance.id}`, {
       method: "PUT",
@@ -41,16 +41,22 @@ export function UserJobInstanceProvider(props) {
   }
   const addUserInstance = (instance) => {
     return fetch(`${apiUrl}/api/UserJobInstance`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(instance),
-  })
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(instance),
+    })
+  }
+
+  const deleteInstance = instanceId => {
+    return fetch(`https://localhost:44360/api/UserJobInstance/${instanceId}`, {
+        method: "DELETE"
+    })
 }
 
   return (
-    <UserJobInstanceContext.Provider value={{ getAllUserJobInstances, userJobInstances, getInstancesByJobId, updateUserInstance, addUserInstance, getUserInstancesByJobInstanceId, getInstancesByUserId }}>
+    <UserJobInstanceContext.Provider value={{ getAllUserJobInstances, userJobInstances, getInstancesByJobId, updateUserInstance, addUserInstance, getUserInstancesByJobInstanceId, getInstancesByUserId, deleteInstance }}>
       {props.children}
     </UserJobInstanceContext.Provider>
   );

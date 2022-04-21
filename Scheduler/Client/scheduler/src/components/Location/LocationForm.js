@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import Swal from 'sweetalert2';
-import { CustomerBackdrop } from "../Customer/CustomerModalBackdrop";
 import { motion } from "framer-motion";
 import Button from 'react-bootstrap/Button';
 import { LocationContext } from "../../Providers/LocationProvider";
+import { LocationModalBackdrop } from "./LocationModalBackdrop";
 
 
 //make sure to wrap handleClose {}
@@ -29,7 +27,7 @@ export const LocationForm = ({ handleClose, refreshProps, customerId }) => {
             }
         },
         exit: {
-            y: "90%",
+            y: "80%",
             opacity: 0,
 
         }
@@ -50,7 +48,7 @@ export const LocationForm = ({ handleClose, refreshProps, customerId }) => {
     }
 
     const handleAddLocation = () => {
-        alert(customerId)
+        
         addLocation({
             name: location.name,
             customerId: customerId,
@@ -65,7 +63,7 @@ export const LocationForm = ({ handleClose, refreshProps, customerId }) => {
     return (
 
         <>
-            <CustomerBackdrop onClick={handleClose}>
+            <LocationModalBackdrop onClick={handleClose}>
                 <motion.div
                     onClick={(e) => e.stopPropagation()}
                     className="locationForm"
@@ -192,7 +190,7 @@ export const LocationForm = ({ handleClose, refreshProps, customerId }) => {
                     </form>
                 </motion.div>
 
-            </CustomerBackdrop>
+            </LocationModalBackdrop>
         </>
     )
 

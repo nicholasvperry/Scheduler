@@ -10,15 +10,15 @@ export function LocationProvider(props) {
 
   const addLocation = (location) => {
     return fetch(`${apiUrl}/api/CustomerLocation`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(location),
-  }).then((res) => res.json())
-}
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(location),
+    }).then((res) => res.json())
+  }
 
-  
+
 
   return (
     <LocationContext.Provider value={{ addLocation }}>

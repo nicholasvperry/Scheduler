@@ -13,9 +13,12 @@ import { Input } from "@mui/icons-material";
 
 export const JobInstanceDetails = () => {
     const { getJobInstancesByJobId, updateInstance, jobInstancesById } = useContext(JobInstanceContext);
-    const { getUserInstancesByJobInstanceId } = useContext(UserJobInstanceContext)
+    const { getUserInstancesByJobInstanceId, addUserInstance, deleteInstance } = useContext(UserJobInstanceContext)
     const { GetCustomerByInstanceIdWithJobInformation } = useContext(CustomerContext)
     const { getAllUsers, users } = useContext(UserContext)
+
+    const [employeeChecked, setEmployeeChecked] = useState([]);
+
 
     const { id } = useParams();
     const [jobInstance, setJobInstances] = useState([])
@@ -35,10 +38,10 @@ export const JobInstanceDetails = () => {
         getAllUsers()
     }, [])
 
-    useEffect(() => {
-        getJobInstancesByJobId(id)
-            
-    }, [refreshProps]);
+    // useEffect(() => {
+    //     getJobInstancesByJobId(id)
+
+    // }, [refreshProps]);
 
     useEffect(() => {
         GetCustomerByInstanceIdWithJobInformation(id)
@@ -47,12 +50,13 @@ export const JobInstanceDetails = () => {
     }, [refreshProps]);
 
     useEffect(() => {
+        
         getUserInstancesByJobInstanceId(id)
             .then(setUserJobInstances)
     }, [refreshProps])
-    
+    // debugger
+
     //this needed to be added because when page loads there is no customer
-    
     if (!customerInstance) {
         return null;
     }
@@ -61,9 +65,22 @@ export const JobInstanceDetails = () => {
     }
 
 
-    const handleEmployeeScheduleChange = () => {
+    const handleRemoveSchedule = (e) => {
         
+        alert(e.target.value)
     }
+
+    //pulls the userId from the e.target.value
+    const handleAddSchedule = (e) => {
+        addUserInstance({
+            jobInstanceId: id,
+            userId: e.target.value,
+            timeIn: null,
+            timeOut: null
+        }).then(setRefreshProps)
+        alert(e.target.value)
+    }
+
 
     let jobObject = customerInstance.customerLocations[0].jobs[0]
     let instanceObject = customerInstance.customerLocations[0].jobs[0].jobInstances[0]
@@ -81,49 +98,61 @@ export const JobInstanceDetails = () => {
                         className="customerDetailsButton backButton"
                         variant="secondary"
                         onClick={() => navigate(-1)}
-                    >Back To Property Details</Button>
+                    >Back</Button>
                     <br />
                 </div>
 
                 <div className="headerName">
-                    <h4>Service</h4>
+                    <h2>Service</h2>
                 </div>
 
                 <div className="customerInformation">
-                    <h6>{customerInstance.fullName}</h6>
+                    <h5>{customerInstance.fullName}</h5>
                     <div>{customerInstance.phoneNumber}</div>
                     <div>{customerInstance.email}</div>
                 </div>
                 <br />
                 <div className="propertyInformation">
-                    <h6>{customerInstance.customerLocations[0].name}</h6>
+                    <h5>{customerInstance.customerLocations[0].name}</h5>
                     <div>{customerInstance.customerLocations[0].fullAddress}</div>
                 </div>
                 <br />
                 <div className="jobInformation">
-                    <h6>Job Information</h6>
+                    <h5>Job Information</h5>
                     <div>{jobObject.name}</div>
                     <div>{jobObject.details}</div>
                 </div>
                 <br />
                 <div className="instanceStatus">
-                    <h6>Status</h6>
+                    <h5>Status</h5>
                     {instanceObject.scheduleDate && !instanceObject.completedDate ? <div>Scheduled for: {scheduledDate}</div> : instanceObject.scheduleDate && instanceObject.completedDate ? <div>Completed on {completedDate}<div>Completed By {userCompleted}</div></div> : <div>Unscheduled</div>}
                 </div>
                 <br />
                 <div className="serviceEmployees">
-                    <h6>Employees</h6>
+                    <h5>Employees</h5>
 
                     <div className="checkList">
-                        
+
                         <div className="list-container">
                             {users.map((user, index) => (
                                 <div key={index}>
                                     {/* map throguh users then look to see which userJobInstances have userid. Then it defaults those as checked */}
-                                    <><input value={user.id} type="checkbox" checked={userJobInstances.some(uj => uj.userId === user.id) ? "true" : ""} onClick={handleEmployeeScheduleChange}/>
-                                    <span>{user.fullName}</span>
-                                    </>
+
+                                    {userJobInstances.some(uj => uj.userId === user.id) ?
+                                        <><input type="checkbox" value={userJobInstances.id} defaultChecked="checked" onChange={handleRemoveSchedule}/>
+                                            <span>{user.fullName}</span>
+                                        </>
+                                        
+                                        :
+                                        <>
+                                            <input type="checkbox" value={user.id} onChange={handleAddSchedule}/>
+                                            <span>{user.fullName}</span>
+                                        </>
+                                    }
                                     
+
+
+
                                 </div>
                             ))}
                         </div>

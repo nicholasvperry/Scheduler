@@ -25,7 +25,7 @@ const CustomerList = () => {
     if (customerSearchTerms !== "") {
       // If the search field is not blank, display matching customers
 
-      const subset = customers.filter(customer => customer.fullName.toLowerCase().includes(customerSearchTerms.toLowerCase()) || customer.email.toLowerCase().includes(customerSearchTerms.toLowerCase()))
+      const subset = customers.filter(customer => customer.fullName.toLowerCase().includes(customerSearchTerms.toLowerCase()) || customer.email.toLowerCase().includes(customerSearchTerms.toLowerCase()) || customer.phoneNumber.includes(customerSearchTerms))
       setFiltered(subset)
     } else {
       // If the search field is blank, display all customers
@@ -41,7 +41,7 @@ const CustomerList = () => {
 
     <>
       <div className="center">
-        <div className="customerList" centered>
+        <div className="customerList">
           <div className="stickyHeader">
             <h1 className="customerHeader">Customers</h1>
             <CustomerSearch className="customerSearch" />

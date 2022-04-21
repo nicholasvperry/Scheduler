@@ -1,7 +1,7 @@
 import React from "react";
 import {motion} from "framer-motion"
 
-export const CustomerBackdrop = ({children, onClick}) => {
+export const JobModalBackdrop = ({children, onClick}) => {
     //for form modal
     //requires some css
     //wrap the modal in this backdrop

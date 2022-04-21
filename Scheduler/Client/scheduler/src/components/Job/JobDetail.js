@@ -5,6 +5,8 @@ import { JobContext } from "../../Providers/JobProvider";
 import Button from 'react-bootstrap/Button';
 import { JobInstanceContext } from "../../Providers/JobInstanceProvider";
 import JobInstance from "../JobInstance/JobInstance";
+import { AnimatePresence } from "framer-motion";
+import { InstanceForm } from "../JobInstance/JobInstanceForm";
 
 
 export const JobDetails = () => {
@@ -22,6 +24,10 @@ export const JobDetails = () => {
     //get current user
     const user = JSON.parse(sessionStorage.getItem("userProfile"))
 
+     //add state for jobForm modal
+     const [jobInstanceFormModalOpen, setJobInstanceFormModal] = useState(false)
+     const jobInstanceClose = () => setJobInstanceFormModal(false)
+     const jobInstanceOpen = () => setJobInstanceFormModal(true)
 
     useEffect(() => {
         getJobById(id)
@@ -58,7 +64,7 @@ export const JobDetails = () => {
                         <Button
                             className="addJob"
                             variant="secondary"
-                            onClick={() => navigate(`/addservice/${id}`)}
+                            onClick={() => (jobInstanceFormModalOpen ? jobInstanceClose() : jobInstanceOpen())}
                         >Add Service</Button>
                         &nbsp;&nbsp;
                         <Button
@@ -70,13 +76,13 @@ export const JobDetails = () => {
                     <br />
                     <div className="jobLocationCard">
                         <div>
-                            <h6>Customer</h6>
+                            <h4>Customer</h4>
                             <div>{job.customerLocation.customer.fullName}</div>
                             <div>{job.customerLocation.customer.phoneNumber}</div>
                             <div>{job.customerLocation.customer.email}</div>
                         </div>
                         <div>
-                            <h6>Address</h6>
+                            <h4>Address</h4>
                             <div>{job.customerLocation.streetAddress}</div>
                             <div>{job.customerLocation.city}, {job.customerLocation.state} {job.customerLocation.zip}</div>
                         </div>
@@ -203,7 +209,18 @@ export const JobDetails = () => {
                         </div>
                     </div>
                 </div>
+                <AnimatePresence
+                    //Disable and initial animations on children that are present when the compent is first rendered
+                    initial={false}
+                    //Only render one component at a time.
+                    //The exiting componenet will finish its exit animation before entering component is rendered
+                    exitBeforeEnter={true}
+                //Fires whel all exiting nodes have completed animating out
 
+                >
+                    {jobInstanceFormModalOpen && <InstanceForm jobInstanceFormModalOpen={jobInstanceFormModalOpen} handleClose={jobInstanceClose} refreshProps={setRefreshProps} jobId={id} />}
+
+                </AnimatePresence>
             </div>
         </>
     );

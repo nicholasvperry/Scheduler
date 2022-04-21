@@ -15,10 +15,10 @@ export const Schedule = (props) => {
     const jobProp = props.instanceObject.job
     const navigate = useNavigate()
     const handleJobClick = () => {
-        navigate(`/scheduledetails/${props.instanceObject.job.id}`)
+        navigate(`/jobinstance/${jobInstanceProp.id}`)
     }
     //add onclick to div after class name. Need to fix the schedule job detail
-
+   
     return (
         <> 
             <td onClick={handleJobClick}>
