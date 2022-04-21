@@ -376,6 +376,22 @@ namespace Scheduler.Repositories
                 }
             }
         }
+
+        public void DeleteUserJobInstance(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                        DELETE FROM UserJobInstance WHERE Id = @Id";
+                    DbUtils.AddParameter(cmd, "@Id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 
 

@@ -12,6 +12,7 @@ namespace Scheduler.Repositories
         public List<UserJobInstance> GetAllByJobInstanceId(int id);
         public List<UserJobInstance> GetAllByUserAndDate(int id, DateTime date);
         public List<UserJobInstance> GetAllByUser(int id);
+        public void DeleteUserJobInstance(int id);
 
     }
 }

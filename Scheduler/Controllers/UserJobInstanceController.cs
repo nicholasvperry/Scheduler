@@ -94,6 +94,7 @@ namespace Scheduler.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _userJobInstanceRepository.DeleteUserJobInstance(id);
         }
     }
 }
