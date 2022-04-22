@@ -96,5 +96,21 @@ namespace Scheduler.Controllers
         {
             _userJobInstanceRepository.DeleteUserJobInstance(id);
         }
+
+        // Patch /userprofilecontroller/deactivate/id
+        [HttpPatch("complete/{id}/{userId}")]
+        public void MarkComplete(int id, int userId)
+        {
+            _userJobInstanceRepository.MarkComplete(id, userId);
+
+        }
+        // Patch /userprofilecontroller/deactivate/id
+        [HttpPatch("uncomplete/{id}")]
+        public void MarkUnComplete(int id)
+        {
+            _userJobInstanceRepository.MarkUnComplete(id);
+
+
+        }
     }
 }

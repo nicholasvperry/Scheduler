@@ -128,7 +128,7 @@ export const InstanceForm = ({ handleClose, jobId, refreshProps }) => {
     //add the instance and then add the userjobinstances
     const addSingleInstance = () => {
         //add instance
-        debugger
+        
         addInstance({
             jobId: jobId,
             completedDate: null,

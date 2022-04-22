@@ -392,6 +392,39 @@ namespace Scheduler.Repositories
                 }
             }
         }
+
+        public void MarkComplete(int id, int userId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE JobInstance
+                    SET CompletedDate = GETDATE(), CompletedUserId = @UserId
+                    WHERE Id = @ID";
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void MarkUnComplete(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE JobInstance
+                    SET CompletedDate = NULL, CompletedUserId = NULL
+                    WHERE Id = @ID";
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 
 

@@ -50,13 +50,28 @@ export function UserJobInstanceProvider(props) {
   }
 
   const deleteInstance = instanceId => {
-    return fetch(`https://localhost:44360/api/UserJobInstance/${instanceId}`, {
-        method: "DELETE"
+    return fetch(`${apiUrl}/api/UserJobInstance/${instanceId}`, {
+      method: "DELETE"
     })
-}
-
+  }
+  const completeInstance = (id, userId) => {
+    return fetch(`${apiUrl}/api/UserJobInstance/complete/${id}/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+  }
+  const unCompleteInstance = (id) => {
+    return fetch(`${apiUrl}/api/UserJobInstance/uncomplete/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+  }
   return (
-    <UserJobInstanceContext.Provider value={{ getAllUserJobInstances, userJobInstances, getInstancesByJobId, updateUserInstance, addUserInstance, getUserInstancesByJobInstanceId, getInstancesByUserId, deleteInstance }}>
+    <UserJobInstanceContext.Provider value={{ getAllUserJobInstances, userJobInstances, getInstancesByJobId, updateUserInstance, addUserInstance, getUserInstancesByJobInstanceId, getInstancesByUserId, deleteInstance, completeInstance, unCompleteInstance }}>
       {props.children}
     </UserJobInstanceContext.Provider>
   );

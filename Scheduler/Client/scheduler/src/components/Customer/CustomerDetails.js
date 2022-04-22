@@ -85,7 +85,7 @@ export const CustomerDetails = () => {
                 //Fires whel all exiting nodes have completed animating out
 
                 >
-                    {locationFormModalOpen && <LocationForm locationFormModalOpen={locationFormModalOpen} handleClose={locationClose} refreshProps={setRefreshProps} jobId={id} />}
+                    {locationFormModalOpen && <LocationForm locationFormModalOpen={locationFormModalOpen} handleClose={locationClose} refreshProps={setRefreshProps} customerId={id} />}
 
                 </AnimatePresence>
                 
@@ -99,7 +99,7 @@ export const CustomerDetails = () => {
                 //Fires whel all exiting nodes have completed animating out
 
                 >
-                    {jobFormModalOpen && <JobForm jobFormModalOpen={jobFormModalOpen} handleClose={jobClose} refreshProps={setRefreshProps} jobId={id} locationId={customerLocationId} />}
+                    {jobFormModalOpen && <JobForm jobFormModalOpen={jobFormModalOpen} handleClose={jobClose} refreshProps={setRefreshProps} locationId={customerLocationId} />}
 
                 </AnimatePresence>
 

@@ -112,7 +112,8 @@ export const ScheduleList = () => {
                                                     index={index}
                                                 >
                                                     {(provided) => (
-                                                        <tr className="instanceCard"
+                                                        <tr 
+                                                        className={instance.jobInstance.completedDate ? `completedInstanceCard` : `instanceCard`}
                                                             {...provided.draggableProps}
                                                             ref={provided.innerRef}
                                                             {...provided.dragHandleProps}

@@ -36,9 +36,15 @@
     background: #2eb5eb;
     border-radius: 10px;
 }
+
 /* set schrollbar lenght */
-::-webkit-scrollbar-button:end{height: 30px;}
-::-webkit-scrollbar-button:start{height: 30px;}
+::-webkit-scrollbar-button:end {
+    height: 30px;
+}
+
+::-webkit-scrollbar-button:start {
+    height: 30px;
+}
 
 body {
     margin: 0;
@@ -252,21 +258,27 @@ body {
     width: 100%;
 }
 
-/* .instanceCard {
-    padding: 20px 0 0;
+table {
+    border-collapse: collapse;
+    empty-cells: show;
 }
 
-.listContent li:nth-child(odd) {
-    border: 1px solid black;
-    border-radius: 25px;
-    width: 600px;
-    background: #a0e2fd;
+td {
+    position: relative;
 }
 
-.listContent li:nth-child(even) {
-    border: 1px solid black;
-    border-radius: 25px;
-    width: 600px;
+/* tr.completedInstanceCard td:before {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-bottom: 1px solid #111;
+    width: 100%;
+}
+
+tr.completedInstanceCard td:after {
+    content: "\00B7";
+    font-size: 1px;
 } */
 
 .scheduleList:border {
@@ -359,7 +371,7 @@ body {
     width: clamp(50%, 700px, 90%);
     height: min(50%, 300px);
     color: white;
-    
+
 }
 
 /* Made div just to fix the border */
@@ -393,7 +405,7 @@ body {
     flex-direction: column;
     align-items: center;
     color: white;
-    
+
 }
 
 .recurring {
@@ -447,6 +459,7 @@ body {
 .headerName {
     text-align: center;
 }
+
 .jobLocationCard {
     display: flex;
     justify-content: space-between;
@@ -529,6 +542,7 @@ thead {
     padding-left: 70px;
     padding-top: 30px;
 }
+
 label {
     width: 140px;
     display: block;
@@ -536,4 +550,8 @@ label {
 
 select {
     width: 189px;
+}
+
+.completedInstanceCard {
+    background-color: grey;
 }

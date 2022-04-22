@@ -13,15 +13,10 @@ import { Input } from "@mui/icons-material";
 
 export const JobInstanceDetails = () => {
     const { getJobInstancesByJobId, updateInstance, jobInstancesById } = useContext(JobInstanceContext);
-    const { getUserInstancesByJobInstanceId, addUserInstance, deleteInstance } = useContext(UserJobInstanceContext)
+    const { getUserInstancesByJobInstanceId, addUserInstance, deleteInstance, completeInstance, unCompleteInstance } = useContext(UserJobInstanceContext)
     const { GetCustomerByInstanceIdWithJobInformation } = useContext(CustomerContext)
     const { getAllUsers, users } = useContext(UserContext)
-
-    const [employeeChecked, setEmployeeChecked] = useState([]);
-
-
     const { id } = useParams();
-    const [jobInstance, setJobInstances] = useState([])
     const [customerInstance, setCustomerInstance] = useState()
     //set state as empty array
     const [userJobInstances, setUserJobInstances] = useState([])
@@ -32,16 +27,13 @@ export const JobInstanceDetails = () => {
     const [refreshProps, setRefreshProps] = useState()
 
     //get current user
-    const user = JSON.parse(sessionStorage.getItem("userProfile"))
+    const userId = JSON.parse(sessionStorage.getItem("userProfile")).id
 
     useEffect(() => {
         getAllUsers()
     }, [])
 
-    // useEffect(() => {
-    //     getJobInstancesByJobId(id)
 
-    // }, [refreshProps]);
 
     useEffect(() => {
         GetCustomerByInstanceIdWithJobInformation(id)
@@ -50,7 +42,7 @@ export const JobInstanceDetails = () => {
     }, [refreshProps]);
 
     useEffect(() => {
-        
+
         getUserInstancesByJobInstanceId(id)
             .then(setUserJobInstances)
     }, [refreshProps])
@@ -66,8 +58,9 @@ export const JobInstanceDetails = () => {
 
 
     const handleRemoveSchedule = (e) => {
-        
-        alert(e.target.value)
+
+        deleteInstance(e.target.value)
+            .then(setRefreshProps)
     }
 
     //pulls the userId from the e.target.value
@@ -78,7 +71,17 @@ export const JobInstanceDetails = () => {
             timeIn: null,
             timeOut: null
         }).then(setRefreshProps)
-        alert(e.target.value)
+        
+    }
+
+    const handleCompleteInstance = () => {
+        completeInstance(id, userId)
+            .then(setRefreshProps)
+    }
+
+    const handleUnCompleteInstance = () => {
+        unCompleteInstance(id, userId)
+            .then(setRefreshProps)
     }
 
 
@@ -88,7 +91,7 @@ export const JobInstanceDetails = () => {
     let scheduledDate = Moment(instanceObject.scheduleDate).format(`MM-DD-YYYY`)
     let completedDate = Moment(instanceObject.completedDate).format(`MM-DD-YYYY`)
     let userCompleted = customerInstance.customerLocations[0].jobs[0].jobInstances[0].user.fullName
-    
+
     return (
         <>
 
@@ -139,19 +142,16 @@ export const JobInstanceDetails = () => {
                                     {/* map throguh users then look to see which userJobInstances have userid. Then it defaults those as checked */}
 
                                     {userJobInstances.some(uj => uj.userId === user.id) ?
-                                        <><input type="checkbox" value={userJobInstances.id} defaultChecked="checked" onChange={handleRemoveSchedule}/>
+                                        <><input type="checkbox" value={userJobInstances.find(x => x.userId === user.id && x.jobInstanceId === +id).id} defaultChecked="checked" onClick={handleRemoveSchedule} />
                                             <span>{user.fullName}</span>
                                         </>
-                                        
+
                                         :
                                         <>
-                                            <input type="checkbox" value={user.id} onChange={handleAddSchedule}/>
+                                            <input type="checkbox" value={user.id} onChange={handleAddSchedule} />
                                             <span>{user.fullName}</span>
                                         </>
                                     }
-                                    
-
-
 
                                 </div>
                             ))}
@@ -160,6 +160,19 @@ export const JobInstanceDetails = () => {
 
                 </div>
 
+                {instanceObject.completedDate ?
+                    <Button
+                        className=""
+                        variant="secondary"
+                        onClick={handleUnCompleteInstance}
+                    >Mark Not Complete</Button>
+                    :
+                    <Button
+                        className=""
+                        variant="secondary"
+                        onClick={handleCompleteInstance}
+                    >Mark Complete</Button>
+                }
 
             </div>
         </>
