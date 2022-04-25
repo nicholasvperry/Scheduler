@@ -48,6 +48,32 @@ namespace Scheduler.Controllers
             return Ok(userJobInstance);
         }
 
+        // GET api/<UserJobInstanceController>/5
+        [HttpGet("getbyuseranddate/{id}/{date}")]
+        public IActionResult GetAllByUserAndDate(int id, DateTime date)
+        {
+            var userJobInstance = _userJobInstanceRepository.GetAllByUserAndDate(id, date);
+            if (userJobInstance == null)
+            {
+                return NotFound();
+            }
+            return Ok(userJobInstance);
+        }
+
+        // GET api/<UserJobInstanceController>/5
+        [HttpGet("getbyuser/{id}")]
+        public IActionResult GetAllByUser(int id)
+        {
+            var userJobInstance = _userJobInstanceRepository.GetAllByUser(id);
+            if (userJobInstance == null)
+            {
+                return NotFound();
+            }
+            return Ok(userJobInstance);
+        }
+
+
+
         // POST api/<UserJobInstanceController>
         [HttpPost]
         public IActionResult Post(UserJobInstance userJobInstance)
@@ -68,6 +94,23 @@ namespace Scheduler.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _userJobInstanceRepository.DeleteUserJobInstance(id);
+        }
+
+        // Patch /userprofilecontroller/deactivate/id
+        [HttpPatch("complete/{id}/{userId}")]
+        public void MarkComplete(int id, int userId)
+        {
+            _userJobInstanceRepository.MarkComplete(id, userId);
+
+        }
+        // Patch /userprofilecontroller/deactivate/id
+        [HttpPatch("uncomplete/{id}")]
+        public void MarkUnComplete(int id)
+        {
+            _userJobInstanceRepository.MarkUnComplete(id);
+
+
         }
     }
 }

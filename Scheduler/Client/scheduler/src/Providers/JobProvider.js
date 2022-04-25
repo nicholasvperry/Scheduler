@@ -19,8 +19,19 @@ export function JobProvider(props) {
       .then((res) => res.json())
   }
 
+  const addJob = (job) => {
+    return fetch(`${apiUrl}/api/Job`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(job),
+  }).then((res) => res.json())
+}
+  
+
   return (
-    <JobContext.Provider value={{ getAllJobs, jobs, getJobById }}>
+    <JobContext.Provider value={{ getAllJobs, jobs, getJobById, addJob }}>
       {props.children}
     </JobContext.Provider>
   );

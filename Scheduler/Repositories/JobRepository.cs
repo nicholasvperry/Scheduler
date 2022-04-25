@@ -267,8 +267,7 @@ ji.CompletedDate, ji.CompletedUserId, ji.CurrentRouteOrderNumber, ji.Id AS Insta
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"DELETE FROM Comment WHERE JobId = @Id
-                                        
+                    cmd.CommandText = @"
                                         DELETE FROM Job WHERE Id = @Id";
                     DbUtils.AddParameter(cmd, "@id", id);
 

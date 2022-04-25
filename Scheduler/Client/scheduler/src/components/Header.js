@@ -19,15 +19,15 @@ export default function Header() {
   return (
     <div>
       <Navbar lang='eng' color="light" light expand="md">
-        <NavbarBrand tag={RRNavLink} to="/">Scheduler</NavbarBrand>
+        <NavbarBrand lang='eng' tag={RRNavLink} to="/">Scheduler</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav navbar>
             {isLoggedIn &&
               <>
-                <NavItem>
-                  <NavLink tag={RRNavLink} to="/userprofiles">User Profiles</NavLink>
-                </NavItem>
+                {/* <NavItem>
+                  <NavLink tag={RRNavLink} to="/userprofiles">user Profiles</NavLink>
+                </NavItem> */}
 
                 <NavItem>
                   <a aria-current="page" className="nav-link" href='/'

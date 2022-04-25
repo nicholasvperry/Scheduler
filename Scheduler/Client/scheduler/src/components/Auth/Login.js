@@ -24,23 +24,31 @@ export default function Login() {
   };
 
   return (
-    <Form onSubmit={loginSubmit}>
+    <>
+    <div className="login">      
+    <form onSubmit={loginSubmit} className="loginForm">
+      <h1>Welcome to Scheduler</h1>
+      <br/>
+      <br/>
+      <br/>
       <fieldset>
-        <FormGroup>
-          <Label for="email">Email</Label>
-          <Input id="email" type="text" onChange={e => setEmail(e.target.value)} />
-        </FormGroup>
-        <FormGroup>
-          <Label for="password">Password</Label>
-          <Input id="password" type="password" onChange={e => setPassword(e.target.value)} />
-        </FormGroup>
-        <FormGroup>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" type="text" onChange={e => setEmail(e.target.value)} />
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input id="password" type="password" onChange={e => setPassword(e.target.value)} />
+        </div>
+        <div>
           <Button>Login</Button>
-        </FormGroup>
+        </div>
         <em>
           Not registered? <Link to="/register">Register</Link>
         </em>
       </fieldset>
-    </Form>
+    </form>
+    </div>
+    </>
   );
 }

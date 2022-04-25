@@ -1,13 +1,58 @@
+/* add personal font. Has to be in public */
+@font-face {
+    font-family: 'Baron';
+    src: local('Baron'), url(../public/Font/Baron\ Neue\ Black.otf) format('truetype');
+}
+
 /* set the app to take up the whole screen */
-.App{
-    width: 100vw;
+.App {
+    width: 100%;
     height: 100vh;
+    background: #edf8fd;
+    overflow: clip;
+    font-family: Baron;
+    font-size: medium;
+    color: rgb(127, 127, 127);
 }
 
 .applicationViews {
     padding-top: 75px;
     width: 100%;
     padding-left: 50px;
+    height: 100%;
+    background: #edf8fd;
+    overflow-y: auto;
+}
+
+/* .applicationViews::-webkit-scrollbar {
+    display: none;
+} */
+
+/* width */
+::-webkit-scrollbar {
+    width: 15px;
+    height: 50%;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #2eb5eb;
+    border-radius: 10px;
+}
+
+/* set schrollbar lenght */
+::-webkit-scrollbar-button:end {
+    height: 30px;
+}
+
+::-webkit-scrollbar-button:start {
+    height: 30px;
 }
 
 body {
@@ -15,22 +60,33 @@ body {
     padding: 0;
 }
 
-.allViews{
+.allViews {
     width: 100vw;
     height: 100vh;
     display: flex;
 }
 
-.header{
-    position:absolute;
+.header {
+    position: absolute;
     top: 0px;
     right: 0px;
+}
+
+.welcomeName {
+    position: absolute;
+    top: 0;
+    
+}
+
+.welcomeContent {
+    padding-top: 200px;
 }
 
 /* hide side panel on react date range*/
 .rdrDefinedRangesWrapper {
     display: none;
-  }
+}
+
 /* ------- This is for the sidebar --------- */
 .sidebar {
     height: 100%;
@@ -57,12 +113,14 @@ body {
     align-items: center;
 }
 
+
 /* makes icon take 30% of row and centers icon in the 30$ */
 .row #icon {
-   flex: 30%;
-   display: grid;
-   place-items: center; 
+    flex: 30%;
+    display: grid;
+    place-items: center;
 }
+
 /* makes title take 70% of row */
 .row #title {
     flex: 70%;
@@ -96,6 +154,61 @@ body {
 }
 
 /* -------Customer Table-------- */
+.center {
+    display: flex;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.customerNameTable {
+    width: 95%;
+}
+
+
+.customerList {
+    border: 1px solid black;
+    border-radius: 20px;
+    width: 800px;
+    height: 90vh;
+    overflow-y: auto;
+}
+
+/* .customerList::-webkit-scrollbar {
+    display: none;
+} */
+
+.customerList:border {
+    z-index: 10000;
+}
+
+.customerTableHead {
+    position: sticky;
+    top: 5.3rem;
+    background-color: #a0e2fd;
+    z-index: 9998;
+}
+
+.customerHeader {
+    text-align: center;
+}
+
+.completedCustomerTable {
+    width: 100%;
+}
+
+.customerSearch {
+    text-align: center;
+}
+
+.tableHead {
+    background: #a0e2fd;
+    width: 100%;
+}
+
+.customerList tr:nth-child(even) {
+    background-color: #a0e2fd;
+}
+
 .tableRow:hover {
     cursor: pointer;
     background-color: rgb(229, 227, 227);
@@ -103,22 +216,384 @@ body {
 
 /* ------Location------ */
 .customerLocations {
-    
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.customerDetailHeader {
+    padding-left: 100px;
+    padding-bottom: 10px;
+}
+
+.customerDetailsButton {
+    position: fixed;
+    top: 90px;
+    right: 100px;
 }
 
 .locationCard {
     border: 1px solid black;
+    border-radius: 25px;
     width: 500px;
     padding-left: 20px;
     padding-right: 20px;
 }
+
+/* ----------schedule---------- */
+.userJobInstances {
+    list-style-type: none;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.stickyCustomerHeader {
+    position: sticky;
+    top: 10rem;
+    background-color: #edf8fd;
+    z-index: 9999;
+}
+
+.scheduleCard {
+    display: flex;
+
+}
+
+.scheduleList tr:nth-child(even) {
+    background-color: #a0e2fd;
+}
+
+.scheduleTableHead {
+    position: sticky;
+    top: 4.9rem;
+    background-color: #a0e2fd;
+    z-index: 9998;
+}
+
+.scheduleTable {
+    width: 100%;
+}
+
+.scheduleHeader {
+    width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    empty-cells: show;
+}
+
+td {
+    position: relative;
+}
+
+/* tr.completedInstanceCard td:before {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-bottom: 1px solid #111;
+    width: 100%;
+}
+
+tr.completedInstanceCard td:after {
+    content: "\00B7";
+    font-size: 1px;
+} */
+
+.scheduleList:border {
+    z-index: 10000;
+}
+
+.scheduleList {
+    height: 85%;
+    width: 1000px;
+    border: 1px solid black;
+    border-radius: 25px;
+    position: absolute;
+    overflow: hidden;
+    overflow-y: auto;
+    text-align: center;
+    justify-content: center;
+}
+
+/* .scheduleList::-webkit-scrollbar {
+    display: none;
+} */
+
+.userJobInstances {}
+
 /* -------Job----- */
 .jobCard {
     border: 1px dashed black;
-
+    border-radius: 25px;
+    padding-left: 20px;
+    padding-top: 10px;
 }
 
 .jobCard:hover {
     cursor: pointer;
     background-color: rgb(229, 227, 227);
+}
+
+
+
+.jobDetailCard {
+    border: 1px solid black;
+    border-radius: 25px;
+    width: 1400px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
+
+.unscheduledInstances {
+    text-align: center;
+    justify-content: center;
+    border: 1px dashed black;
+    border-radius: 50px;
+    width: 700px;
+    height: 200px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+
+
+.customerTable {
+    width: 108%;
+}
+
+.tableBody {
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+
+.scheduledServices {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.upcomingInstances {
+    border: 1px dashed black;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    width: 530px;
+    height: 350px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+/* ------Instance Form ---- */
+.addInstanceForm {
+    width: clamp(50%, 700px, 90%);
+    height: min(50%, 300px);
+    color: white;
+
+}
+
+/* Made div just to fix the border */
+.instanceFormBorder {
+    position: absolute;
+    height: 500px;
+    width: 250px;
+    border: 2px solid white;
+    border-radius: 25px;
+    margin-right: 500px;
+    z-index: -1;
+}
+
+.jobInstanceBackdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: #6abcdce9;
+    display: flex;
+    z-index: 100001;
+}
+
+.jobForm {
+    width: clamp(50%, 700px, 90%);
+    height: min(50%, 300px);
+    margin: auto;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    word-break: break-all;
+}
+
+.recurring {
+    position: absolute;
+    top: 0%;
+    left: 40%;
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.days {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.duration {
+    padding-left: 70px;
+}
+
+/* format color in table */
+.scheduledServices tr:nth-child(even) {
+    background-color: #a0e2fd;
+}
+
+.unscheduledInstances tr:nth-child(even) {
+    background-color: #a0e2fd;
+}
+
+.completedInstances {
+    text-align: center;
+    border: 1px dashed black;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    width: 700px;
+    height: 350px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.jobInstanceDetailCard {
+    border: 1px solid black;
+    width: 500px;
+    padding: 15px;
+    border-radius: 25px;
+    margin: auto;
+    height: 90vh;
+    overflow-y: auto;
+
+}
+
+.headerName {
+    text-align: center;
+    position: sticky;
+    top: 0rem;
+    background-color: #edf8fd;
+    z-index: 9999;
+}
+
+.jobLocationCard {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tableHeader {
+    width: 100%;
+}
+
+.stickyHeader {
+    position: sticky;
+    top: 0rem;
+    background-color: #edf8fd;
+    z-index: 9999;
+}
+
+
+
+thead {
+    position: sticky;
+    top: 2.1rem;
+    background-color: #edf8fd;
+    z-index: 9998;
+    width: 100%;
+}
+
+/* hide scroll bars */
+/* .unscheduledInstances::-webkit-scrollbar {
+    display: none;
+}
+
+.completedInstances::-webkit-scrollbar {
+    display: none;
+}
+
+.upcomingInstances::-webkit-scrollbar {
+    display: none;
+} */
+
+
+/* ---------LocationForm and JobForm Backdrop------ */
+.backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: #6abcdce9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.locationForm {
+    width: clamp(50%, 700px, 90%);
+    height: min(50%, 300px);
+    margin: auto;
+    padding: 0 2rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+.locationFormBorder {
+    width: 500px;
+    height: 400px;
+    border: solid white;
+    border-radius: 25px;
+    padding-left: 70px;
+    padding-top: 30px;
+}
+
+.jobFormBorder {
+    width: 500px;
+    height: 400px;
+    border: solid white;
+    border-radius: 25px;
+    padding-left: 70px;
+    padding-top: 30px;
+}
+
+label {
+    width: 140px;
+    display: block;
+}
+
+select {
+    width: 189px;
+}
+
+.completedInstanceCard {
+    background-color: grey;
+}
+
+.login {
+    background-color: #6abcdc;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 92vh;
+    width: 100vw;
+}
+
+
+
+.loginForm {
+    padding-top: 200px;
+    font-family: Baron;
+    color: white;
 }

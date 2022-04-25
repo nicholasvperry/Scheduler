@@ -126,7 +126,44 @@ VALUES ('Monthly trimming"', 'Trim back hill', 11, 1, 1, 75, 1)
 
 INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
 VALUES ('Monthly trimming"', 'Trim back hill', 1, 1, 1, 150, 1)
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Bi-Weekly Mowing 3.5"', 'Mow yard diagonal', 5, 5, 1, 45, 1)
 
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Weekly Mowing 2.75"', 'Make sure to lock the gate', 6, 6, 2, 70, 2)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Bi-Weekly Mowing 3.25"', 'Mow side lot', 6, 6, 1, 55, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Weekly Mowing 4.0"', 'Mow trim blow', 7, 7, 1, 75, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Monthly trimming"', 'Trim bank in front of building', 7, 7, 1, 150, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Weekly Mowing 3.25"', 'Mow front yard diagonal', 3, 3, 1, 45, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Weekly Mowing 2.5"', 'Bag fron only', 3, 3, 2, 10000, 2)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Bi-Weekly Mowing 3.25"', 'It gets really tall behind the fence', 4, 4, 1, 55, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Monthly trimming"', 'Trim back hill', 5, 5, 1, 150, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Weekly Mowing 3.5"', 'Mow trim blow', 8, 8, 1, 45, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Bi-Weekly Mowing 3.25"', 'It gets really tall behind the fence', 9, 9, 1, 55, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Monthly trimming"', 'Trim back hill', 9, 9, 1, 75, 1)
+
+INSERT INTO Job([Name], Details, CustomerLocationId, RouteOrderNumber, JobStatusId, Price, BillingTypeId)
+VALUES ('Monthly trimming"', 'Trim back hill', 10, 10, 1, 150, 1)
 INSERT INTO JobInstance(JobId, CompletedDate, Price, CurrentRouteOrderNumber, ScheduleDate, IsPaid, CompletedUserId)
 VALUES (1, GETDATE(), NULL, 1, GETDATE(), 0, 1)
 

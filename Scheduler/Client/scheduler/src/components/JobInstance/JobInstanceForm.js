@@ -11,21 +11,51 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import { addDays } from 'date-fns';
 import DateRangePicker from "react-date-range/dist/components/DateRangePicker";
 import { UserJobInstanceContext } from "../../Providers/UserJobInstanceProvider";
+import { JobModalBackdrop } from "../Job/JobModalBackdrop";
+import { motion } from "framer-motion";
+import { JobInstanceModalBackdrop } from "./JobInstanceModalBackdrop";
+import Button from 'react-bootstrap/Button';
 
-export const InstanceForm = () => {
+
+//make sure to wrap handleClose {}
+export const InstanceForm = ({ handleClose, jobId, refreshProps }) => {
     const { getJobById } = useContext(JobContext);
     const { getAllUsers, users } = useContext(UserContext)
-    const { addInstance, getJobInstancesByJobId, jobInstancesById } = useContext(JobInstanceContext)
+    const { addInstance, getJobInstancesByJobId } = useContext(JobInstanceContext)
     const { addUserInstance } = useContext(UserJobInstanceContext)
-    const [refreshProps, setRefreshProps] = useState()
     const [job, setJob] = useState()
     const navigate = useNavigate()
-    const { id } = useParams();
-    const [instance, setInstance] = useState()
+    // const { id } = useParams();
+    const [instance, setInstance] = useState({
+        scheduleDate: null
+    })
     //state for checkboxes
     const [checked, setChecked] = useState([]);
     const [employeeChecked, setEmployeeChecked] = useState([]);
     const [recurring, setRecurring] = useState(true)
+
+    //Modal Animation
+    const dropIn = {
+        hidden: {
+            y: "-100vh",
+            opacity: 0,
+        },
+        visible: {
+            y: "0",
+            opacity: 1,
+            transition: {
+                duration: 0.1,
+                type: "spring",
+                damping: 25,
+                stiffness: 500,
+            }
+        },
+        exit: {
+            y: "20%",
+            opacity: 0,
+
+        }
+    }
 
     //for react-date-range
     const [dates, setDates] = useState([
@@ -36,16 +66,11 @@ export const InstanceForm = () => {
         }
     ]);
 
-    //wait for data before button is active
-    const [isLoading, setIsLoading] = useState(true)
-
-    //get current user
-    const user = JSON.parse(sessionStorage.getItem("userProfile"))
 
     useEffect(() => {
-        getJobById(id)
+        getJobById(jobId)
             .then(setJob)
-    }, [refreshProps]);
+    }, [ ]);
 
     useEffect(() => {
         getAllUsers()
@@ -92,7 +117,7 @@ export const InstanceForm = () => {
     }
 
 
-
+    //sets state for adding multiple days
     const toggleChange = () => {
         if (recurring === true) {
             setRecurring(false)
@@ -102,26 +127,47 @@ export const InstanceForm = () => {
         }
     }
 
-
+    //add the instance and then add the userjobinstances
     const addSingleInstance = () => {
-
+        //add instance
+        
         addInstance({
-            jobId: id,
+            jobId: jobId,
             completedDate: null,
             price: null,
             currentRouteOrder: job.routeOrderNumber,
             scheduleDate: instance.singleDate,
             isPaid: false,
             completedUserId: null
-        }).then(() => navigate(`/job/${id}`))
-
+        }).then((instance) => {
+            //instance is the response from the add instance call
+            //map through the checkedemployees state and make an array with their id
+            const employeeArray = [employeeChecked.map(e => {
+                return new Promise(() => {
+                    fetch(`https://localhost:44320/api/UserJobInstance`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            JobInstanceId: instance.id,
+                            UserId: e,
+                            TimeIn: null,
+                            TimeOut: null
+                        }),
+                    })
+                })
+            })]
+            Promise.all(employeeArray)
+            .then(refreshProps)
+        })
     }
 
     const addEmployeesToSchedule = () => {
 
-        getJobInstancesByJobId(id).then(() => {
+        getJobInstancesByJobId(jobId).then((jobInstancesById) => {
             jobInstancesById.forEach((j) => {
-                
+
                 const employeesArray = [employeeChecked.map(employee => {
                     return new Promise(() => {
 
@@ -140,6 +186,7 @@ export const InstanceForm = () => {
                     })
                 })]
                 Promise.all(employeesArray)
+                .then(refreshProps)
             })
         })
     }
@@ -153,14 +200,14 @@ export const InstanceForm = () => {
         // alert(numberOfDays)
 
         //finds all days between dates. 0 = Sunday 1 = Monday
-        var start = Moment(dates[0].startDate), // Sept. 1st
-            end = Moment(dates[0].endDate), // Nov. 2nd
+        var start = Moment(dates[0].startDate), // selected from calendar
+            end = Moment(dates[0].endDate), // selected in calendar
             day = parseInt(selectedDays); //this is the value coming from state
 
         var result = [];
         var current = start.clone();
 
-        while (current.day(7 + day).isBefore(end)) {
+        while (current.day(7 + day).isSameOrBefore(end)) {
             result.push(current.clone());
         }
 
@@ -181,7 +228,7 @@ export const InstanceForm = () => {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        jobId: id,
+                        jobId: jobId,
                         completedDate: null,
                         price: null,
                         currentRouteOrder: job.routeOrderNumber,
@@ -194,23 +241,11 @@ export const InstanceForm = () => {
         })]
         //run promise.all with array of fetch calls created
         //get by id then loop through and add employees to each instance
+        //debugger
         Promise.all(resultsArray)
             .then(() => {
                 addEmployeesToSchedule()
             })
-        // .then(() => {
-        //     return fetch(`https://localhost:44320/api/jobInstance/${id}`)
-        // }).then((response) => {
-        //     debugger
-        //     return response.json()
-        // }).then((data) => {
-        //     debugger
-        //     data.map(instance => {
-
-        //     })
-
-
-        // })
     }
 
 
@@ -225,114 +260,135 @@ export const InstanceForm = () => {
 
     return (
         <>
-
-            <form className="addInstanceForm">
-                <h2 className="addInstanceFormTitle">New Service</h2>
-
-                <div>{job.name}</div>
-                <div>{job.details}</div>
-                <div>
-
-                    <div>
-                        <input value="recurring" onChange={toggleChange} type="checkbox" />
-                        <span>Recurring</span>
-                    </div>
+            <JobInstanceModalBackdrop onClick={handleClose}>
+                <motion.div
+                    onClick={(e) => e.stopPropagation()}
+                    className="jobForm"
+                    variants={dropIn}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                >
 
 
-                    {recurring === false ?
-                        <div className="recurring">
-                            <div className="often">
+                    <form className="addInstanceForm">
+                        <h2 className="addInstanceFormTitle">New Service</h2>
+
+                        <div>{job.name}</div>
+                        <div>{job.details}</div>
+                        <div>
+
+                            <div>
+                                <input value="recurringInput" onChange={toggleChange} type="checkbox" />
+                                <span >Recurring</span>
+                            </div>
+
+
+                            {recurring === false ?
+                                <div className="recurring">
+                                    {/* <div className="often">
                                 <h6>Frequency</h6>
                                 <select onChange={handleControlledInputChange} name="frequency">
                                     <option>Choose Frequency</option>
                                     <option value="weekly">Weekly</option>
                                     <option value="biWeekly">Bi Weekly</option>
                                 </select>
-                            </div>
+                            </div> */}
 
-                            <div className="days">
-                                <input value={1} onChange={handleCheck} type="checkbox" />
-                                <span>Monday</span><br />
-                                <input value={2} onChange={handleCheck} type="checkbox" />
-                                <span>Tuesday</span><br />
-                                <input value={3} onChange={handleCheck} type="checkbox" />
-                                <span>Wednesday</span><br />
-                                <input value={4} onChange={handleCheck} type="checkbox" />
-                                <span>Thursday</span><br />
-                                <input value={5} onChange={handleCheck} type="checkbox" />
-                                <span>Friday</span><br />
-                                <input value={6} onChange={handleCheck} type="checkbox" />
-                                <span>Saturday</span><br />
-                                <input value={0} onChange={handleCheck} type="checkbox" />
-                                <span>Sunday</span>
-
-                                <div className="duration">
-                                    {/* <h6>From:</h6>
+                                    <div className="days">
+                                        <input value={1} onChange={handleCheck} type="checkbox" />
+                                        <span>Monday</span><br />
+                                        <input value={2} onChange={handleCheck} type="checkbox" />
+                                        <span>Tuesday</span><br />
+                                        <input value={3} onChange={handleCheck} type="checkbox" />
+                                        <span>Wednesday</span><br />
+                                        <input value={4} onChange={handleCheck} type="checkbox" />
+                                        <span>Thursday</span><br />
+                                        <input value={5} onChange={handleCheck} type="checkbox" />
+                                        <span>Friday</span><br />
+                                        <input value={6} onChange={handleCheck} type="checkbox" />
+                                        <span>Saturday</span><br />
+                                        <input value={0} onChange={handleCheck} type="checkbox" />
+                                        <span>Sunday</span>
+                                    </div>
+                                    <div className="duration">
+                                        {/* <h6>From:</h6>
                                     <input type="date" id="startDate" name="startDate" required onChange={handleControlledInputChange}></input>
                                     <h6>To:</h6>
                                     <input type="date" id="endDate" name="endDate" required onChange={handleControlledInputChange}></input> */}
 
-                                    <DateRangePicker
-                                        editableDateInputs={true}
-                                        onChange={item => setDates([item.selection])}
-                                        moveRangeOnFirstSelection={false}
-                                        ranges={dates}
+                                        <DateRangePicker
+                                            editableDateInputs={true}
+                                            onChange={item => setDates([item.selection])}
+                                            moveRangeOnFirstSelection={false}
+                                            ranges={dates}
 
 
-                                    />
+                                        />
+                                    </div>
+
+
                                 </div>
 
+                                :
+                                <div className="instanceName">
+                                    <label htmlFor="addInstanceName">Date </label> <br/>
+                                    <input type="date" id="addInstanceName" name="singleDate" onChange={handleControlledInputChange}
+                                    />
+                                </div>}
+
+
+                            <div className="checkList">
+                                <div className="title">Employees:</div>
+                                <div className="list-container">
+                                    {users.map((user, index) => (
+                                        <div key={index}>
+                                            <input value={user.id} type="checkbox" onChange={handleEmployeeCheck} />
+                                            <span>{user.fullName}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
-                        :
-                        <div className="instanceName">
-                            <label htmlFor="addInstanceName">Date </label>
-                            <input type="date" id="addInstanceName" name="singleDate" onChange={handleControlledInputChange}
-                            />
-                        </div>}
+                        {recurring ?
+                            <Button 
+                            variant="secondary"
+                            className="btn btn-primary"
+                                onClick={event => {
+                                    event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+                                    addSingleInstance()
+                                    handleClose()
 
+                                }}
+                            >
+                                Add Service
+                            </Button> :
 
-                    <div className="checkList">
-                        <div className="title">Employees:</div>
-                        <div className="list-container">
-                            {users.map((user, index) => (
-                                <div key={index}>
-                                    <input value={user.id} type="checkbox" onChange={handleEmployeeCheck} />
-                                    <span>{user.fullName}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+                            <Button
+                            variant="secondary"
+                            className="btn btn-primary"
+                                onClick={event => {
+                                    event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+                                    addMultipleInstances()
+                                    handleClose()
+                                }}
+                            >
+                                Add Services
+                            </Button>
 
-                {recurring ?
-                    <button className="btn btn-primary"
-                        onClick={event => {
-                            event.preventDefault() // Prevent browser from submitting the form and refreshing the page
-                            addSingleInstance()
-
-                        }}
-                    >
-                        Add Service
-                    </button> :
-
-                    <button className="btn btn-primary"
-                        onClick={event => {
-                            event.preventDefault() // Prevent browser from submitting the form and refreshing the page
-                            addMultipleInstances()
-                        }}
-                    >
-                        Add Services
-                    </button>
-
-                }
-
-                <button className="btn btn-primary" onClick={() => {
-                    navigate(`/job/${id}`)
-                }}>Cancel</button>
-            </form>
-
+                        }
+                        &nbsp;
+                        <Button 
+                        variant="secondary"                        
+                        className="btn btn-primary" onClick={(e) => {
+                            e.preventDefault()
+                            handleClose()
+                        }}>Cancel</Button>
+                    </form>
+                    <div className="instanceFormBorder"></div>
+                </motion.div>
+            </JobInstanceModalBackdrop>
         </>
     )
 
