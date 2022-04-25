@@ -26,7 +26,9 @@ export const InstanceForm = ({ handleClose, jobId, refreshProps }) => {
     const [job, setJob] = useState()
     const navigate = useNavigate()
     // const { id } = useParams();
-    const [instance, setInstance] = useState()
+    const [instance, setInstance] = useState({
+        scheduleDate: null
+    })
     //state for checkboxes
     const [checked, setChecked] = useState([]);
     const [employeeChecked, setEmployeeChecked] = useState([]);

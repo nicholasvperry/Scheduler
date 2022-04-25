@@ -90,8 +90,9 @@ export const JobInstanceDetails = () => {
 
     let scheduledDate = Moment(instanceObject.scheduleDate).format(`MM-DD-YYYY`)
     let completedDate = Moment(instanceObject.completedDate).format(`MM-DD-YYYY`)
-    let userCompleted = customerInstance.customerLocations[0].jobs[0].jobInstances[0].user.fullName
-
+    //map through the instance and find the user that has the id = instanceObect.completedUserId
+    let userCompleted = users.find(x => x.id === instanceObject.completedUserId)?.fullName
+    
     return (
         <>
 

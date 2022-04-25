@@ -55,6 +55,7 @@ export const JobDetails = () => {
 
     return (
         <>
+        <div className="center">
             <div className="jobDetailCard">
                 <div className="sticky">
                     <div className="jobName">
@@ -88,7 +89,7 @@ export const JobDetails = () => {
                         </div>
 
                         <div className="unscheduledInstances">
-                            <h3 className="stickyHeader">Unscheduled Services</h3>
+                            <h3 className="stickyHeader">unscheduled Services</h3>
                             <div className="unscheduledJobCards">
                                 <table cellPadding={15} cellSpacing={0} className="customerTable">
                                     <thead className="tableHead">
@@ -128,7 +129,7 @@ export const JobDetails = () => {
                 <div className="scheduledServices">
                     <div className="upcomingInstances">
                         <div></div>
-                        <h3 className="stickyHeader scheduledHeader">Upcoming Services</h3>
+                        <h3 className="stickyHeader scheduledHeader">upcoming Services</h3>
                         <div className="upcomingJobCards">
                             <table cellPadding={15} cellSpacing={0} className="customerTable">
                                 <thead className="tableHead">
@@ -221,6 +222,7 @@ export const JobDetails = () => {
                     {jobInstanceFormModalOpen && <InstanceForm jobInstanceFormModalOpen={jobInstanceFormModalOpen} handleClose={jobInstanceClose} refreshProps={setRefreshProps} jobId={id} />}
 
                 </AnimatePresence>
+            </div>
             </div>
         </>
     );

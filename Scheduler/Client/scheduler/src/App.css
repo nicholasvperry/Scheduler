@@ -1,9 +1,18 @@
+/* add personal font. Has to be in public */
+@font-face {
+    font-family: 'Baron';
+    src: local('Baron'), url(../public/Font/Baron\ Neue\ Black.otf) format('truetype');
+}
+
 /* set the app to take up the whole screen */
 .App {
     width: 100%;
     height: 100vh;
     background: #edf8fd;
     overflow: clip;
+    font-family: Baron;
+    font-size: medium;
+    color: rgb(127, 127, 127);
 }
 
 .applicationViews {
@@ -61,6 +70,16 @@ body {
     position: absolute;
     top: 0px;
     right: 0px;
+}
+
+.welcomeName {
+    position: absolute;
+    top: 0;
+    
+}
+
+.welcomeContent {
+    padding-top: 200px;
 }
 
 /* hide side panel on react date range*/
@@ -149,7 +168,7 @@ body {
 .customerList {
     border: 1px solid black;
     border-radius: 20px;
-    width: 700px;
+    width: 800px;
     height: 90vh;
     overflow-y: auto;
 }
@@ -361,7 +380,7 @@ tr.completedInstanceCard td:after {
     border-radius: 50px;
     margin-bottom: 20px;
     width: 530px;
-    height: 400px;
+    height: 350px;
     overflow: hidden;
     overflow-y: auto;
 }
@@ -405,7 +424,7 @@ tr.completedInstanceCard td:after {
     flex-direction: column;
     align-items: center;
     color: white;
-
+    word-break: break-all;
 }
 
 .recurring {
@@ -442,7 +461,7 @@ tr.completedInstanceCard td:after {
     border-radius: 50px;
     margin-bottom: 20px;
     width: 700px;
-    height: 400px;
+    height: 350px;
     overflow: hidden;
     overflow-y: auto;
 }
@@ -453,11 +472,17 @@ tr.completedInstanceCard td:after {
     padding: 15px;
     border-radius: 25px;
     margin: auto;
+    height: 90vh;
+    overflow-y: auto;
 
 }
 
 .headerName {
     text-align: center;
+    position: sticky;
+    top: 0rem;
+    background-color: #edf8fd;
+    z-index: 9999;
 }
 
 .jobLocationCard {
@@ -554,4 +579,21 @@ select {
 
 .completedInstanceCard {
     background-color: grey;
+}
+
+.login {
+    background-color: #6abcdc;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 92vh;
+    width: 100vw;
+}
+
+
+
+.loginForm {
+    padding-top: 200px;
+    font-family: Baron;
+    color: white;
 }
