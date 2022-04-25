@@ -1,3 +1,3 @@
 Scheduler is a full stack app that I built to help businesses in the home service industry run smoothly. It helps businesses schedule services for customers and add them to employee schedules. I plan on adding quotes and requests where customers can ask request quotes and your business can send them via email or text. I also have the backbone set up to run reports. I plan on adding features to run reports on time sheets, expenses, and other things that will help businesses make sure they are giving quotes that are fair for the customer and also profitable for the business.
 
-Currently it has the scheduld part completed. I have a short demp of the app [by clicking here!](https://www.loom.com/share/4e8a96201c19419cac785b2e463cd914)
+Currently it has the scheduld part completed. I have a short demmo of the app which you can see [by clicking here!](https://www.loom.com/share/4e8a96201c19419cac785b2e463cd914)
